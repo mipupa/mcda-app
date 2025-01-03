@@ -1,6 +1,7 @@
 <div class="container mt-2">
-  <h3>TOPSIS metoda rangiranja alternativ</h3>
-    
+  <div class="card title border shadow-sm bg-color">
+  <h4 class="text-center py-2">TOPSIS metoda rangiranja alternativ</h4>
+  </div>
   <div >
     <table class="table mt-3">
       <thead>
@@ -68,12 +69,10 @@
   </form>
   </div>
   
-  
-      
-  
+   
    <!-- Prikaz rezultatov -->
    <div *ngIf="result.length > 0" class="results-container">
-    <h2>Rezultati TOPSIS Analize</h2>
+    <h4 class="mt-2">Rezultati TOPSIS Analize</h4>
     <table class="results-table">
       <thead>
         <tr>
@@ -83,14 +82,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let res of result">
+        <tr *ngFor="let res of result; let i=index;">
           <td>{{ res.alternativa }}</td>
-          <td>{{ res.rank }}</td>
+          <!--<td>{{ res.rank }}</td> -->
+          <td>{{ i+1 }}</td>
           
         </tr>
       </tbody>
     </table>
+    <h4 class="mt-2">Grafični prikaz:</h4>
+    <div id="chartContainer">
+    <div id="chart"></div>
+    </div>
+    <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Nazaj na izbiro metode</button>
   </div>
-  
-  
-</div> 
+
+
+  </div>

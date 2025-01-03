@@ -13,7 +13,7 @@ export class WsmMethodComponent {
 
   selectedData: any[] = [];
   criteria: string[] = [];
-  weights: number[] = [0, 0, 0];
+  weights: number[] = [0.3, 0.5, 0.2];
   totalWeight: number = 0;
   ranking: { name: string; score: number }[] = [];
 
@@ -59,6 +59,11 @@ export class WsmMethodComponent {
     // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
     return this.weights.some(w => w === 1) && this.weights[index] !== 1;
   }
+
+  // Funkcija za izračun trenutne skupne uteži
+getTotalWeight(): number {
+  return this.weights.reduce((sum, weight) => sum + weight, 0);
+}
   
   analyze(): void {
     // Pripravi in razvrsti podatke za rangiranje
@@ -84,12 +89,12 @@ export class WsmMethodComponent {
       console.error('Ni podatkov za graf!');
       return;
     }
-  
+    console.log('Ranking:',this.ranking);
     d3.select('#chart').selectAll('*').remove(); // Počisti obstoječi graf
   
     const data = this.ranking;
-    const width = 600;
-    const height = 400;
+    const width = 500;
+    const height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 50 };
   
     const svg = d3

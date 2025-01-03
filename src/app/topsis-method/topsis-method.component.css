@@ -72,4 +72,24 @@ h1, h2 {
   padding: 10px 20px;
 }
 
-  
+.bg-color {
+  background-color: #22c968;
+  color:whitesmoke;
+}
+
+.title {
+  display:flex;
+  align-self: center;  
+}  
+
+
+#chartContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+}
