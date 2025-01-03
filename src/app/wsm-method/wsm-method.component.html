@@ -1,0 +1,73 @@
+<div class="container mt-2">
+    <h3>WSM metoda rangiranja alternativ</h3>
+    
+    <div *ngIf="selectedData.length">
+      <table class="table mt-3">
+        <thead>
+          <tr>
+            <th>Alternativa</th>
+            <th *ngFor="let column of criteria">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of selectedData">
+            <td>{{ row[0] }}</td>
+            <td *ngFor="let value of row.slice(1)">{{ value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="mt-4">
+      <h5>Nastavi uteži - pomembnost za posamezni kriterij:</h5>
+     
+      <div *ngFor="let criterion of criteria; let i = index" class="mb-3">
+        <label>{{ criterion }}</label>
+        <input 
+          type="range" 
+          [min]="0" 
+          [max]="1" 
+          [step]="0.1" 
+          [(ngModel)]="weights[i]" 
+          (change)="updateWeights(i, weights[i])" 
+          [disabled]="isDisabled(i)"
+          class="form-range"
+        />
+        <span>{{ weights[i].toFixed(1) }}</span>
+      </div>
+      <div>
+        <h5>Skupna utež: {{ totalWeight.toFixed(1) }}</h5>
+        <p *ngIf="totalWeight !== 1">Skupna obtežitev mora biti 1.0 !</p>
+      </div>
+      <button 
+        class="btn btn-primary mt-3" 
+        [disabled]="totalWeight !== 1" 
+        (click)="analyze()"
+      >
+        Analiziraj
+      </button>
+      
+
+      
+     
+  
+    <div *ngIf="ranking.length" class="mt-5">
+      <h4>Rezultati:</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Alternativa</th>
+            <th>Ocena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of ranking">
+            <td>{{ result.name }}</td>
+            <td>{{ result.score | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <div id="chart"></div>
+    </div>
+  </div>

@@ -1,0 +1,41 @@
+<!-- ahp.component.html -->
+<div>
+  <h2>AHP Comparison</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Criteria</th>
+        <th *ngFor="let criterion of selectedData.criteria">
+          {{ criterion }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let criterion of selectedData.criteria; let i = index">
+        <td>{{ selectedData.criteria[i] }}</td>
+        <td *ngFor="let comparison of selectedData.comparisons[i]; let j = index">
+          <input
+            type="number"
+            [(ngModel)]="selectedData.comparisons[i][j]"
+            min="1"
+            max="9"
+            step="1"
+            *ngIf="i !== j"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button (click)="calculateConsistency()">Check Consistency</button>
+
+  <div *ngIf="consistencyRatio !== null">
+    <p>Consistency Ratio: {{ consistencyRatio | percent }}</p>
+  </div>
+</div>
+
+
+
+  
+  

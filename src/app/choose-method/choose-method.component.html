@@ -1,0 +1,22 @@
+<!-- choose-method.component.html -->
+<div class="container mt-5">
+    <h2>Izberi metodo analize</h2>
+    <div class="list-group">
+      <button
+        *ngFor="let method of methods"
+        class="list-group-item list-group-item-action"
+        [class.active]="method === selectedMethod"
+        (click)="selectMethod(method)"
+      >
+        {{ method }}
+      </button>
+    </div>
+    <button
+      class="btn btn-primary mt-3"
+      [disabled]="!selectedMethod"
+      (click)="proceed()"
+    >
+      Nadaljuj
+    </button>
+  </div>
+  

@@ -1,0 +1,96 @@
+<div class="container mt-2">
+  <h3>TOPSIS metoda rangiranja alternativ</h3>
+    
+  <div >
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th>Alternativa</th>
+          <th *ngFor="let column of criteria">{{ column }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of selectedData">
+          <td>{{ row[0] }}</td>
+          <td *ngFor="let value of row.slice(1)">{{ value }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+  <div class="mt-4">
+    <h5>Nastavi uteži - pomembnost za posamezni kriterij:</h5>
+
+    <form (ngSubmit)="calculateTopsis()">
+    <table class="input-table">
+      <thead>
+        <tr>
+          <th>Kriterij</th>
+          <th>Utež</th>
+          <th>Vrednost</th>
+          <th>Tip kriterija</th>
+        </tr>
+      </thead> 
+      <tbody>
+        <tr *ngFor="let criterion of criteria; let i = index">
+          <td>{{ criterion }}</td>
+          <td>
+            <input
+              type="range"
+              [value]="weights[i]"
+              (input)="onSliderChange(i, $event)"
+              class="input-slider"
+              min="0"
+              max="100"
+              step="10"
+            />
+          </td>
+          <td>{{ weights[i] }}</td>
+          <td>
+            <select
+              [(ngModel)]="types[i]"
+              [ngModelOptions]="{ standalone: true }"
+              class="input-type"
+            >
+              <option value="cost">Cost</option>
+              <option value="benefit">Benefit</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="total-weight">
+      Skupna utež: {{ getTotalWeight() }} / 100
+    </div>
+    <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 100">Analiziraj</button>
+  </form>
+  </div>
+  
+  
+      
+  
+   <!-- Prikaz rezultatov -->
+   <div *ngIf="result.length > 0" class="results-container">
+    <h2>Rezultati TOPSIS Analize</h2>
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Alternativa</th>
+          <th>Rangiranje</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of result">
+          <td>{{ res.alternativa }}</td>
+          <td>{{ res.rank }}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
+</div> 
