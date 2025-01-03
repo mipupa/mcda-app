@@ -31,7 +31,7 @@ export class TopsisMethodComponent implements OnInit{
     const storedDataTable = localStorage.getItem('selectedData');
     if (storedDataTable) {
       this.selectedData = JSON.parse(storedDataTable);
-      this.criteria = this.selectedData[0].slice(1).map((_: unknown, index: number) => `Kriterij ${index + 1}`);
+      this.criteria = this.selectedData[0].slice(1).map((_: unknown, index: number) => `Criteria ${index + 1}`);
     } else {
       alert('Ni izbranih podatkov v localStorage!');
     }
@@ -41,7 +41,7 @@ export class TopsisMethodComponent implements OnInit{
     criteriaValues: [data[1], data[2], data[3]], // Preverite, da je tretja vrednost pravilna
   }));
 
-  this.criteria = ['Kriterij 1', 'Kriterij 2', 'Kriterij 3'];
+  this.criteria = ['Criteria 1', 'Criteria 2', 'Criteria 3'];
   this.weights = [20, 40, 40];
   this.types = ['benefit', 'cost', 'benefit'];
 

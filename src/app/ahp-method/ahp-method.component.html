@@ -1,24 +1,111 @@
-<div *ngIf="matrix && matrix.length > 0">
-  <h3>Enter Pairwise Comparisons:</h3>
+<div class="container mt-2">
+  <div class="card title border shadow-sm bg-color mt-2 mb-5">
+    <h4 class="text-center py-2">AHP analysis method</h4>
+    </div>
+    <div>
+      <table class="table mt-3 mb-5">
+        <thead>
+          <tr>
+            <th>Alternative</th>
+            <th *ngFor="let column of criteria">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of selectedData">
+            <td>{{ row[0] }}</td>
+            <td *ngFor="let value of row.slice(1)">{{ value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+<!--Criteria 1-->
+<div class="card title border shadow-sm mb-5" *ngIf="matrix1 && matrix1.length > 0">
+  <h5 class="px-2 py-2 bg-color-blue">Enter Pairwise Comparisons for criteria 1:</h5>
   <table>
     <thead>
       <tr>
-        <th></th>
-        <th *ngFor="let option of options">{{ option }}</th>
+        <th>Criteria 1</th>
+        <th *ngFor="let option of options1">{{ option }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of matrix; let i = index">
-        <td>{{ options[i] }}</td>
+      <tr *ngFor="let row of matrix1; let i = index">
+        <td>{{ options1[i] }}</td>
         <td *ngFor="let cell of row; let j = index">
           <input
             *ngIf="i < j"
             type="number"
-            [value]="matrix[i][j]"
-            (input)="updateMatrix(i, j, $event)"
+            [value]="matrix1[i][j]"
+            (input)="updateMatrix1(i, j, $event)"
+            min="1"
+            max="9"
+            step="1"
           />
           <span *ngIf="i === j">1</span>
-          <span *ngIf="i > j">{{ matrix[i][j].toFixed(2) }}</span>
+          <span *ngIf="i > j">{{ matrix1[i][j].toFixed(2) }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--Criteria 2-->
+<div class="card title border shadow-sm mb-5" *ngIf="matrix2 && matrix2.length > 0">
+  <h5 class="px-2 py-2 bg-color-blue">Enter Pairwise Comparisons for criteria 2:</h5>
+  <table>
+    <thead>
+      <tr>
+        <th>Criteria 2</th>
+        <th *ngFor="let option of options2">{{ option }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of matrix2; let i = index">
+        <td>{{ options2[i] }}</td>
+        <td *ngFor="let cell of row; let j = index">
+          <input
+            *ngIf="i < j"
+            type="number"
+            [value]="matrix2[i][j]"
+            (input)="updateMatrix2(i, j, $event)"
+            min="1"
+            max="9"
+            step="1"
+          />
+          <span *ngIf="i === j">1</span>
+          <span *ngIf="i > j">{{ matrix2[i][j].toFixed(2) }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--Criteria 3-->
+<div class="card title border shadow-sm mb-5" *ngIf="matrix3 && matrix3.length > 0">
+  <h5 class="px-2 py-2 bg-color-blue">Enter Pairwise Comparisons for criteria 3:</h5>
+  <table>
+    <thead>
+      <tr>
+        <th>Criteria 3</th>
+        <th *ngFor="let option of options3">{{ option }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of matrix3; let i = index">
+        <td>{{ options3[i] }}</td>
+        <td *ngFor="let cell of row; let j = index">
+          <input
+            *ngIf="i < j"
+            type="number"
+            [value]="matrix3[i][j]"
+            (input)="updateMatrix3(i, j, $event)"
+            min="1"
+            max="9"
+            step="1"
+          />
+          <span *ngIf="i === j">1</span>
+          <span *ngIf="i > j">{{ matrix3[i][j].toFixed(2) }}</span>
         </td>
       </tr>
     </tbody>
@@ -26,17 +113,41 @@
 </div>
 
 <div>
-  <button (click)="submitMatrix()">Calculate</button>
+  <button type="submit" class="analyze-button" (click)="submitAllMatrices()">Calculate and Save All</button>  
 </div>
 
-<div *ngIf="results.length > 0">
-  <h3>Results:</h3>
-  <ul>
-    <li *ngFor="let result of results; let i = index">
-      {{ options[i] }}: {{ result.toFixed(4) }}
-    </li>
-  </ul>
+<div class="results-container mt-5">
+  <div *ngIf="results1.length > 0" class="results-column card title border shadow-sm mb-5 bg-light">
+    <h5>Eigenvectors for Criteria 1:</h5>
+    <ul>
+      <li *ngFor="let result of results1; let i = index">
+        {{ options1[i] }}: {{ result.toFixed(4) }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="results2.length > 0" class="results-column card title border shadow-sm mb-5 bg-light">
+    <h5>Eigenvectors for Criteria 2:</h5>
+    <ul>
+      <li *ngFor="let result of results2; let i = index">
+        {{ options2[i] }}: {{ result.toFixed(4) }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="results3.length > 0" class="results-column card title border shadow-sm mb-5 bg-light">
+    <h5>Eigenvectors for Criteria 3:</h5>
+    <ul>
+      <li *ngFor="let result of results3; let i = index">
+        {{ options3[i] }}: {{ result.toFixed(4) }}
+      </li>
+    </ul>
+  </div>
 </div>
+
+</div>
+
+
 
 
 

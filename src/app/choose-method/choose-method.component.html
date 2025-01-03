@@ -1,9 +1,8 @@
 <!-- choose-method.component.html -->
-<div class="container mt-5">
-    <h2>Izberi metodo analize</h2>
-    <div class="list-group">
-      <button class="button-hover"
-        *ngFor="let method of methods"
+<div class="d-flex justify-content-center mt-5 mx-5 py-3 card title border shadow-sm bg-light">
+    <h4 class="text-center">Choose MCDA method</h4>
+    <div class="list-group mx-5">
+      <button class="button-hover" *ngFor="let method of methods"
         class="list-group-item list-group-item-action"
         [class.active]="method === selectedMethod"
         (click)="selectMethod(method)"
@@ -12,11 +11,11 @@
       </button>
     </div>
     <button
-      class="btn btn-primary mt-3"
+      class="btn btn-primary mt-3 mx-5"
       [disabled]="!selectedMethod"
       (click)="proceed()"
     >
-      Proceed
+      Proceed To Analysis
     </button>
   </div>
   

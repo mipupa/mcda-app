@@ -7,7 +7,7 @@
       <table class="table mt-3">
         <thead>
           <tr>
-            <th>Alternativa</th>
+            <th>Alternative</th>
             <th *ngFor="let column of criteria">{{ column }}</th>
           </tr>
         </thead>
@@ -25,9 +25,9 @@
       <table class="input-table">
         <thead>
           <tr>
-            <th>Kriterij</th>
-            <th>Utež</th>
-            <th>Vrednost</th>
+            <th>Criteria</th>
+            <th>Weight</th>
+            <th>Value</th>
             
           </tr>
         </thead> 
@@ -53,7 +53,7 @@
         </tbody>
       </table>
       <div class="total-weight">
-        Skupna utež: {{ getTotalWeight() }} / 1
+        Total weight: {{ getTotalWeight() }} / 1
       </div>
       <div>
        

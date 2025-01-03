@@ -15,3 +15,47 @@ input {
   width: 60px;
 }
 
+.analyze-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.analyze-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+}
+
+.analyze-button:hover {
+  background-color: #27ae60;
+}
+
+.bg-color {
+  background-color: #22c968;
+  color:whitesmoke;
+}
+
+.bg-color-blue {
+  background-color:#3498db;
+  color:whitesmoke;
+}
+.title {
+  display:flex;
+  align-self: center;  
+}  
+
+.results-container {
+  display: flex;
+  gap: 20px; /* Razmik med kolonami */
+}
+
+.results-column {
+  flex: 1; /* Enakomerna širina kolon */
+  padding: 10px;
+  border: 1px solid #ddd; /* Opcijsko: dodaj obrobo */
+  border-radius: 5px;
+}

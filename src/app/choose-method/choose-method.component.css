@@ -1,8 +1,5 @@
 /* choose-method.component.css */
-.container {
-    max-width: 600px;
-    margin: auto;
-  }
+
   button {
     cursor: pointer;
   }

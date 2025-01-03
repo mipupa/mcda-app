@@ -47,7 +47,7 @@ export class AhpService {
   // Perform AHP calculation
   public calculateAHP(): number[] {
     const { priorities } = this.calculatePriorityVector(this.comparisonMatrix);
-    return priorities;
+    return priorities.map(priority => parseFloat(priority.toFixed(2)));
   }
 
   // Get the size of the matrix from selectedData

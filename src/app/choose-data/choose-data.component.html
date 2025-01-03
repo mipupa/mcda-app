@@ -1,0 +1,36 @@
+<table class="table mt-3" *ngIf="data && data.length > 0; else noDataTemplate">
+    <thead>
+      <tr>
+        <th>Choose 3 Alternatives:</th>
+        <th *ngFor="let column of columns">{{ column }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let row of data; let i = index">
+        <td>
+          <div class="form-check">
+          <input 
+            class="form-check-input"
+            type="checkbox" 
+            [checked]="selectedRows.includes(i)"
+            [disabled]="!selectedRows.includes(i) && selectedRows.length >= 3"
+            (change)="toggleSelection(i, row)" />
+          </div>
+          </td>
+      
+        <td *ngFor="let cell of row">{{ cell }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noDataTemplate>
+    <div class="card p-3 text-bg-dark border rounded shadow-sm overflow-hidden bg-light">
+    <p>No data available. Select Data Import from Navbar menu and import data first!</p>
+    </div>
+  </ng-template>
+
+  <button 
+    class="btn btn-primary mt-3" 
+    [disabled]="selectedRows.length !== 3" 
+    (click)="proceedToAnalysis()">Proceed To Choose Method
+  </button>

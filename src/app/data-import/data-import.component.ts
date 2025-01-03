@@ -26,10 +26,13 @@ export class DataImportComponent {
       const wb: XLSX.WorkBook = XLSX.read(arrayBuffer, { type: 'array' });
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-      const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
+      const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });      
       this.columns = jsonData[0] as string[];
       this.data = jsonData.slice(1);
+      
+      // Shrani celotno tabelo (vključno z glavo in podatki) v localStorage
+      localStorage.setItem('importedData', JSON.stringify(jsonData));
+            
     };
     reader.readAsArrayBuffer(target.files[0]);
   }

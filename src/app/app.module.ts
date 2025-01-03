@@ -12,6 +12,7 @@ import { ChooseMethodComponent } from './choose-method/choose-method.component';
 import { AhpMethodComponent } from './ahp-method/ahp-method.component';
 import { TopsisMethodComponent } from './topsis-method/topsis-method.component';
 import { HomeComponent } from './home/home.component';
+import { ChooseDataComponent } from './choose-data/choose-data.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { HomeComponent } from './home/home.component';
     AhpMethodComponent,
     TopsisMethodComponent,
     HomeComponent,
+    ChooseDataComponent,
     
   ],
   imports: [

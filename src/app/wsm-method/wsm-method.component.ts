@@ -21,9 +21,9 @@ export class WsmMethodComponent {
     const storedData = localStorage.getItem('selectedData');
     if (storedData) {
       this.selectedData = JSON.parse(storedData);
-      this.criteria = this.selectedData[0].slice(1).map((_: unknown, index: number) => `Kriterij ${index + 1}`);
+      this.criteria = this.selectedData[0].slice(1).map((_: unknown, index: number) => `Criteria ${index + 1}`);
     } else {
-      alert('Ni izbranih podatkov v localStorage!');
+      alert('No data in localStorage!');
     }
   }
 
