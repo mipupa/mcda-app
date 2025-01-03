@@ -1,0 +1,8 @@
+.text-nav {
+    color:blue;
+    font-size: medium;
+}
+
+.text-nav:hover {
+    color:green;
+}

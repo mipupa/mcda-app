@@ -1,6 +1,6 @@
 <div class="container mt-2">
     <div class="card title border shadow-sm bg-color">
-      <h4 class="text-center py-2">WSM metoda rangiranja alternativ</h4>
+      <h4 class="text-center py-2">WSM Analysis Method</h4>
     </div>
     
     <div *ngIf="selectedData.length">
@@ -21,7 +21,7 @@
     </div>
   
     <div class="mt-4">
-      <h5>Nastavi uteži - pomembnost za posamezni kriterij:</h5>      
+      <h5>Set weights - importance of criterion:</h5>      
       <table class="input-table">
         <thead>
           <tr>
@@ -59,19 +59,19 @@
        
        
       </div>
-      <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 1" (click)="analyze()">Analiziraj</button>
+      <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 1" (click)="analyze()">Process Analysis</button>
       
             
      
     <!-- Prikaz rezultatov -->
     <div *ngIf="ranking.length" class="mt-5">
-      <h4 class="mt-2">Rezultati WSM analize:</h4>
+      <h4 class="mt-2">Analysis Results:</h4>
       <table class="results-table">
         <thead>
           <tr>
-            <th>Alternativa</th>
+            <th>Alternative</th>
             <th>WSM</th>
-            <th>Rangiranje</th>
+            <th>Ranking</th>
           </tr>
         </thead>
         <tbody>
@@ -83,11 +83,11 @@
         </tbody>
       </table>
   
-      <h4 class="mt-2">Grafični prikaz:</h4>
+      <h4 class="mt-2">Visual Representation:</h4>
       <div id="chartContainer">
         <div id="chart"></div>
         </div>
-      <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Nazaj na izbiro metode</button>
+      <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Back To Choose Method</button>
     </div>
 
 

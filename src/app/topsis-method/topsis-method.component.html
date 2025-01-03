@@ -1,6 +1,6 @@
 <div class="container mt-2">
   <div class="card title border shadow-sm bg-color">
-  <h4 class="text-center py-2">TOPSIS metoda rangiranja alternativ</h4>
+  <h4 class="text-center py-2">TOPSIS analysis method</h4>
   </div>
   <div >
     <table class="table mt-3">
@@ -22,16 +22,16 @@
 
 
   <div class="mt-4">
-    <h5>Nastavi uteži - pomembnost za posamezni kriterij:</h5>
+    <h5>Set weights - importance of criterion:</h5>
 
     <form (ngSubmit)="calculateTopsis()">
     <table class="input-table">
       <thead>
         <tr>
-          <th>Kriterij</th>
-          <th>Utež</th>
-          <th>Vrednost</th>
-          <th>Tip kriterija</th>
+          <th>Criteria</th>
+          <th>Weight</th>
+          <th>Value</th>
+          <th>Type of Criteria</th>
         </tr>
       </thead> 
       <tbody>
@@ -65,19 +65,19 @@
     <div class="total-weight">
       Skupna utež: {{ getTotalWeight() }} / 100
     </div>
-    <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 100">Analiziraj</button>
+    <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 100">Process Analysis</button>
   </form>
   </div>
   
    
    <!-- Prikaz rezultatov -->
    <div *ngIf="result.length > 0" class="results-container">
-    <h4 class="mt-2">Rezultati TOPSIS Analize</h4>
+    <h4 class="mt-2">Analysis Results:</h4>
     <table class="results-table">
       <thead>
         <tr>
-          <th>Alternativa</th>
-          <th>Rangiranje</th>
+          <th>Alternative</th>
+          <th>Ranking</th>
           
         </tr>
       </thead>
@@ -90,11 +90,11 @@
         </tr>
       </tbody>
     </table>
-    <h4 class="mt-2">Grafični prikaz:</h4>
+    <h4 class="mt-2">Visual Representation:</h4>
     <div id="chartContainer">
     <div id="chart"></div>
     </div>
-    <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Nazaj na izbiro metode</button>
+    <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Back To Choose Method</button>
   </div>
 
 

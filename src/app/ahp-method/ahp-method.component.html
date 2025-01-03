@@ -1,39 +1,44 @@
-<!-- ahp.component.html -->
-<div>
-  <h2>AHP Comparison</h2>
-
+<div *ngIf="matrix && matrix.length > 0">
+  <h3>Enter Pairwise Comparisons:</h3>
   <table>
     <thead>
       <tr>
-        <th>Criteria</th>
-        <th *ngFor="let criterion of selectedData.criteria">
-          {{ criterion }}
-        </th>
+        <th></th>
+        <th *ngFor="let option of options">{{ option }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let criterion of selectedData.criteria; let i = index">
-        <td>{{ selectedData.criteria[i] }}</td>
-        <td *ngFor="let comparison of selectedData.comparisons[i]; let j = index">
+      <tr *ngFor="let row of matrix; let i = index">
+        <td>{{ options[i] }}</td>
+        <td *ngFor="let cell of row; let j = index">
           <input
+            *ngIf="i < j"
             type="number"
-            [(ngModel)]="selectedData.comparisons[i][j]"
-            min="1"
-            max="9"
-            step="1"
-            *ngIf="i !== j"
+            [value]="matrix[i][j]"
+            (input)="updateMatrix(i, j, $event)"
           />
+          <span *ngIf="i === j">1</span>
+          <span *ngIf="i > j">{{ matrix[i][j].toFixed(2) }}</span>
         </td>
       </tr>
     </tbody>
   </table>
-
-  <button (click)="calculateConsistency()">Check Consistency</button>
-
-  <div *ngIf="consistencyRatio !== null">
-    <p>Consistency Ratio: {{ consistencyRatio | percent }}</p>
-  </div>
 </div>
+
+<div>
+  <button (click)="submitMatrix()">Calculate</button>
+</div>
+
+<div *ngIf="results.length > 0">
+  <h3>Results:</h3>
+  <ul>
+    <li *ngFor="let result of results; let i = index">
+      {{ options[i] }}: {{ result.toFixed(4) }}
+    </li>
+  </ul>
+</div>
+
+
 
 
 

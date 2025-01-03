@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AHPData } from './ahp.model';
+import { AhpService } from './services/ahp.service';
 
 @Component({
   selector: 'app-ahp-method',
@@ -10,74 +10,39 @@ import { AHPData } from './ahp.model';
 
 export class AhpMethodComponent implements OnInit {
 
-  selectedData: AHPData = { alternatives: [], criteria: [], comparisons: [] };
-  consistencyRatio: number | null = null;
+  //selectedData: AHPData = { alternatives: [], criteria: [], comparisons: [] };
+
+  public matrix: number[][] = [];
+  public results: number[] = [];
+  public options: string[] = [];
+
+  constructor(private ahpService: AhpService) {}
 
   ngOnInit(): void {
-    this.loadAHPData();
+    this.initializeMatrix();
   }
 
-  loadAHPData(): void {
-    const data = localStorage.getItem('selectedData');
-    if (data) {
-      const parsedData = JSON.parse(data) as any[]; // any[] to handle nested arrays
-      this.selectedData.alternatives = parsedData.map(d => d[0]);
-      this.selectedData.comparisons = parsedData.map(d => d.slice(1));
-      this.selectedData.criteria = this.extractCriteria(parsedData);
+  private initializeMatrix(): void {
+    const selectedDataString = localStorage.getItem('selectedData');
+    const selectedData = selectedDataString ? JSON.parse(selectedDataString) : [];
+    this.options = selectedData.map((item: any) => item[0]); // Extract option names
+    const size = this.options.length;
+
+    // Create a square matrix filled with 1s
+    this.matrix = Array.from({ length: size }, () => Array(size).fill(1));
+  }
+
+  public updateMatrix(row: number, col: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const numValue = parseFloat(input.value);
+    if (!isNaN(numValue)) {
+      this.matrix[row][col] = numValue;
+      this.matrix[col][row] = 1 / numValue;
     }
   }
 
-  extractCriteria(data: any[]): string[] {
-    if (data.length > 0) {
-      return Object.keys(data[0]).slice(1).map((_, index) => `Criterion ${index + 1}`);
-    }
-    return [];
-  }
-
-  calculateConsistency(): void {
-    const n = this.selectedData.criteria.length;
-    const consistencyMatrix = this.calculateConsistencyMatrix();
-    const consistencyIndex = this.calculateConsistencyIndex(consistencyMatrix);
-    this.consistencyRatio = consistencyIndex / (n - 1);
-  }
-
-  calculateConsistencyMatrix(): number[][] {
-    const n = this.selectedData.criteria.length;
-    const matrix = this.selectedData.comparisons;
-    let consistencyMatrix: number[][] = [];
-
-    for (let i = 0; i < n; i++) {
-      consistencyMatrix[i] = [];
-      for (let j = 0; j < n; j++) {
-        if (i === j) {
-          consistencyMatrix[i][j] = 1; // Diagonal elements are always 1
-        } else {
-          consistencyMatrix[i][j] = matrix[i][j]; // User-input values
-        }
-      }
-    }
-
-    // Fill reciprocals for the matrix
-    for (let i = 0; i < n; i++) {
-      for (let j = i + 1; j < n; j++) {
-        consistencyMatrix[j][i] = 1 / consistencyMatrix[i][j];
-      }
-    }
-
-    return consistencyMatrix;
-  }
-
-  calculateConsistencyIndex(matrix: number[][]): number {
-    const n = this.selectedData.criteria.length;
-    const consistencyVector = matrix.map((row, i) => row[i] / matrix[i][i]);
-    const lambdaMax = consistencyVector.reduce((sum, val) => sum + val) / n;
-    const CI = (lambdaMax - n) / (n - 1);
-    const CR = CI / 0.58;
-    return CI * 100; // Convert CI to percentage
-  }
-
-  getRandomConsistencyIndex(n: number): number {
-    const RI = [0, 0, 0.52, 0.89, 1.11]; // Random Index values for n=3 to n=5
-    return RI[n - 1];
+  public submitMatrix(): void {
+    this.ahpService.setComparisonMatrix(this.matrix);
+    this.results = this.ahpService.calculateAHP();
   }
 }
