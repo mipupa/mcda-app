@@ -20,7 +20,7 @@
     </div>
 
 <!--Criteria 1-->
-<div class="card title border shadow-sm mb-5" *ngIf="matrix1 && matrix1.length > 0">
+<div class="card title border shadow-sm mb-2" *ngIf="matrix1 && matrix1.length > 0">
   <h5 class="px-2 py-2 bg-color-blue">Enter Pairwise Comparisons for criteria 1:</h5>
   <table>
     <thead>
@@ -33,10 +33,13 @@
       <tr *ngFor="let row of matrix1; let i = index">
         <td>{{ options1[i] }}</td>
         <td *ngFor="let cell of row; let j = index">
-          <input
+          <input            
             *ngIf="i < j"
             type="number"
+            [id]="'matrix1-' + i + '-' + j"
+            [name]="'matrix1-' + i + '-' + j"
             [value]="matrix1[i][j]"
+            [(ngModel)]="matrix1[i][j]"
             (input)="updateMatrix1(i, j, $event)"
             min="1"
             max="9"
@@ -48,6 +51,14 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div><button type="submit" class="button analyze-button" (click)="CheckMatrix1()">Check Consistency</button></div>
+<div class="consistency-results mb-2" *ngIf="matrix1Consistency">
+  <span>Consistency Ratio (CR): {{ matrix1Consistency.CR }}
+  Consistency Index (CI): {{ matrix1Consistency.CI }}
+  Lambda Max (λmax): {{ matrix1Consistency.lambdaMax }}
+  Status: <span [ngClass]="{'text-success': matrix1Consistency.isConsistent, 'text-danger': !matrix1Consistency.isConsistent}">
+    {{ matrix1Consistency.isConsistent ? 'Consistent' : 'Inconsistent' }}</span></span>
 </div>
 
 <!--Criteria 2-->
@@ -122,7 +133,7 @@
     <ul>
       <li *ngFor="let result of results1; let i = index">
         {{ options1[i] }}: {{ result.toFixed(4) }}
-      </li>
+      </li>    
     </ul>
   </div>
 

@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AhpService {
 
+
   constructor() { }
 
   private comparisonMatrix: number[][] = [];
@@ -54,6 +55,33 @@ export class AhpService {
   public getMatrixSize(): number {
     const selectedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
     return selectedData.length;
+  }
+
+   /**
+   * Calculate consistency of the comparison matrix.
+   * @returns An object containing CR, CI, lambdaMax, and isConsistent.
+   */
+   public calculateConsistency(): { CR: number; CI: number; lambdaMax: number; isConsistent: boolean } {
+    const n = this.comparisonMatrix.length;
+    const RI = n === 3 ? 0.58 : 0; // Random index for n=3
+
+    if (n !== 3) {
+      throw new Error('Consistency calculation is currently implemented only for 3x3 matrices.');
+    }
+
+    // Calculate priorities and lambdaMax
+    const { priorities, eigenValue: lambdaMax } = this.calculatePriorityVector(this.comparisonMatrix);
+
+    // Calculate Consistency Index (CI)
+    const CI = (lambdaMax - n) / (n - 1);
+
+    // Calculate Consistency Ratio (CR)
+    const CR = CI / RI;
+
+    // Determine if the matrix is consistent
+    const isConsistent = CR < 0.1;
+
+    return { CR: parseFloat(CR.toFixed(3)), CI: parseFloat(CI.toFixed(3)), lambdaMax: parseFloat(lambdaMax.toFixed(3)), isConsistent };
   }
 }
 
