@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -9,19 +8,25 @@ import * as d3 from 'd3';
 })
 export class WsmMethodComponent {
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  @ViewChild('targetSection') targetSection!: ElementRef;
+
+  constructor(private cdr: ChangeDetectorRef) { }
 
   selectedData: any[] = [];
   criteria: string[] = [];
   weights: number[] = [0.3, 0.5, 0.2];
   totalWeight: number = 0;
-  ranking: { name: string; score: number }[] = [];
+  ranking: { alternativa: string; rezultat: number }[] = [];
 
   ngOnInit(): void {
     const storedData = localStorage.getItem('selectedData');
     if (storedData) {
       this.selectedData = JSON.parse(storedData);
-      this.criteria = this.selectedData[0].slice(1).map((_: unknown, index: number) => `Criteria ${index + 1}`);
+      // Glave stolpcev pridobimo iz prve vrstice
+      this.criteria = this.selectedData[0];
+      // Odstranimo glave stolpcev iz podatkov
+      this.selectedData = this.selectedData.slice(1);
+
     } else {
       alert('No data in localStorage!');
     }
@@ -30,7 +35,7 @@ export class WsmMethodComponent {
   updateWeights(index: number, value: number): void {
     const remainingWeight = 1 - value; // Preostanek teže za razporeditev
     let otherWeightsSum = 0;
-  
+
     // Prilagodimo ostale uteži
     for (let i = 0; i < this.weights.length; i++) {
       if (i !== index) {
@@ -43,7 +48,7 @@ export class WsmMethodComponent {
         }
       }
     }
-  
+
     if (value !== 1) {
       for (let i = 0; i < this.weights.length; i++) {
         if (i !== index && otherWeightsSum > 0) {
@@ -51,7 +56,7 @@ export class WsmMethodComponent {
         }
       }
     }
-  
+
     this.totalWeight = this.weights.reduce((sum, w) => sum + w, 0);
   }
 
@@ -61,26 +66,29 @@ export class WsmMethodComponent {
   }
 
   // Funkcija za izračun trenutne skupne uteži
-getTotalWeight(): number {
-  return this.weights.reduce((sum, weight) => sum + weight, 0);
-}
-  
+  getTotalWeight(): number {
+    return this.weights.reduce((sum, weight) => sum + weight, 0);
+  }
+
   analyze(): void {
     // Pripravi in razvrsti podatke za rangiranje
     this.ranking = this.selectedData.map(row => {
-      const name = row[0];
-      const score = row.slice(1).reduce((sum: number, value: number, index: number) => sum + value * this.weights[index], 0);
-      return { name, score };
+      const alternativa = row[0];
+      const rezultat = row.slice(1).reduce((sum: number, value: number, index: number) => sum + value * this.weights[index], 0);
+      return { alternativa, rezultat };
     });
-  
+
     // Sortiraj rezultate po točkah (padajoče)
-    this.ranking.sort((a, b) => b.score - a.score);
-  
+    this.ranking.sort((a, b) => b.rezultat - a.rezultat);
+    localStorage.setItem('WSM_Results', JSON.stringify(this.ranking));
+
     // Zahtevaj Angularju, da ponovno preveri DOM, preden izrišemo graf
     this.cdr.detectChanges();
-  
+
     // Počisti graf in ga prikaži
     this.createChart();
+    //scrolldown page
+    this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   createChart(): void {
@@ -89,48 +97,48 @@ getTotalWeight(): number {
       console.error('Ni podatkov za graf!');
       return;
     }
-    console.log('Ranking:',this.ranking);
+    console.log('Ranking:', this.ranking);
     d3.select('#chart').selectAll('*').remove(); // Počisti obstoječi graf
-  
+
     const data = this.ranking;
     const width = 500;
     const height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-  
+
     const svg = d3
       .select('#chart')
       .append('svg')
       .attr('width', width)
       .attr('height', height);
-  
+
     const x = d3
       .scaleBand()
-      .domain(data.map(d => d.name))
+      .domain(data.map(d => d.alternativa))
       .range([margin.left, width - margin.right])
       .padding(0.1);
-  
+
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(data, d => d.score) || 0])
+      .domain([0, d3.max(data, d => d.rezultat) || 0])
       .nice()
       .range([height - margin.bottom, margin.top]);
-  
+
     svg
       .append('g')
       .selectAll('rect')
       .data(data)
       .join('rect')
-      .attr('x', d => x(d.name)!)
-      .attr('y', d => y(d.score))
-      .attr('height', d => y(0) - y(d.score))
+      .attr('x', d => x(d.alternativa)!)
+      .attr('y', d => y(d.rezultat))
+      .attr('height', d => y(0) - y(d.rezultat))
       .attr('width', x.bandwidth())
       .attr('fill', 'steelblue');
-  
+
     svg
       .append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x));
-  
+
     svg
       .append('g')
       .attr('transform', `translate(${margin.left},0)`)

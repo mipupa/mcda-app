@@ -8,6 +8,27 @@ h1, h2 {
   color: #2c3e50;
 }
 
+.table-row:hover {
+  background-color:beige;
+ }
+
+/* Stiliranje prvega stolpca (levo poravnano) */
+.td:first-child, .th:first-child {
+  text-align: left;
+}
+
+/* Stiliranje ostalih stolpcev (sredinsko poravnano) */
+td:not(:first-child), th:not(:first-child) {
+  text-align: center;
+}
+
+.input-table, .results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  table-layout: fixed;
+}
+
 .input-table, .results-table {
   width: 100%;
   margin: 20px auto;
@@ -16,7 +37,7 @@ h1, h2 {
 }
 
 .input-table th, .results-table th {
-  background-color: #3498db;
+ background-color: #3498db;
   color: white;
   padding: 10px;
 }
@@ -25,7 +46,7 @@ h1, h2 {
   padding: 10px;
   border: 1px solid #ddd;
 }
-
+ 
 .input-weight, .input-type {
   width: 100%;
   padding: 8px;
@@ -48,10 +69,6 @@ h1, h2 {
 
 .results-container {
   margin-top: 20px;
-}
-
-.results-table tr:nth-child(even) {
-  background-color: #f9f9f9;
 }
 
 .input-slider {

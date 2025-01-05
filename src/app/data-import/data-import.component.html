@@ -2,24 +2,24 @@
   <div class="card p-3 text-bg-dark border rounded shadow-sm overflow-hidden bg-light">
     <h4>Excel Sheet Data Import</h4>
     <div class="row mx-3 my-3">
-      <input type="file" (change)="onFileChange($event)" class="form-control" />
+      <input type="file" (change)="onFileChange($event)" class="form-control input-file" />
     </div>
   </div>
 
-
-    <table class="table mt-3" *ngIf="data.length">
+    
+    <table class="table border shadow-sm mt-3 mb-2 text-center" *ngIf="data.length">
       <thead>
         <tr>
-          <th>Choose 3 Alternatives:</th>
+          <th>Select 3 Alternatives:</th>
           <th *ngFor="let column of columns">{{ column }}</th>
         </tr>
       </thead>
       <tbody>
         <tr class="table-row" *ngFor="let row of data; let i = index">
           <td>
-            <div class="form-check">
+            <div class="input-checkbox">
             <input 
-              class="form-check-input"
+              class="form-check-input input-checkbox"
               type="checkbox" 
               [checked]="selectedRows.includes(i)"
               [disabled]="!selectedRows.includes(i) && selectedRows.length >= 3"
@@ -31,11 +31,6 @@
         </tr>
       </tbody>
     </table>
-  
-    <button 
-      class="btn btn-primary mt-3" 
-      [disabled]="selectedRows.length !== 3" 
-      (click)="proceedToAnalysis()">Continue
-    </button>
-  
-  
+    <div class="text-center">
+    <button class="btn btn-primary mt-3" [disabled]="selectedRows.length !== 3" (click)="proceedToAnalysis()">Proceed To Choose Method</button>
+    </div>

@@ -4,17 +4,15 @@
     </div>
     
     <div *ngIf="selectedData.length">
-      <table class="table mt-3">
+      <table class="table mt-3 border shadow-sm">
         <thead>
           <tr>
-            <th>Alternative</th>
             <th *ngFor="let column of criteria">{{ column }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of selectedData">
-            <td>{{ row[0] }}</td>
-            <td *ngFor="let value of row.slice(1)">{{ value }}</td>
+          <tr class="table-row" *ngFor="let row of selectedData">
+            <td *ngFor="let value of row">{{ value }}</td>
           </tr>
         </tbody>
       </table>
@@ -22,7 +20,7 @@
   
     <div class="mt-4">
       <h5>Set weights - importance of criterion:</h5>      
-      <table class="input-table">
+      <table class="input-table border shadow-sm">
         <thead>
           <tr>
             <th>Criteria</th>
@@ -32,8 +30,8 @@
           </tr>
         </thead> 
         <tbody>
-          <tr *ngFor="let criterion of criteria; let i = index">
-            <td>{{ criterion }}</td>
+          <tr *ngFor="let column of criteria.slice(1); let i = index">
+            <td>{{ column }}</td>
             <td>
               <input 
               type="range"
@@ -53,7 +51,7 @@
         </tbody>
       </table>
       <div class="total-weight">
-        Total weight: {{ getTotalWeight() }} / 1
+        Total Weight Checksum: {{ getTotalWeight() }} / 1
       </div>
       <div>
        
@@ -64,9 +62,11 @@
             
      
     <!-- Prikaz rezultatov -->
-    <div *ngIf="ranking.length" class="mt-5">
-      <h4 class="mt-2">Analysis Results:</h4>
-      <table class="results-table">
+    <div #targetSection *ngIf="ranking.length" class="mt-5">
+      <div class="card title border shadow-sm bg-color">
+        <h4 class="text-center py-2">WSM Analysis Results</h4>
+      </div>
+      <table class="results-table border shadow-sm">
         <thead>
           <tr>
             <th>Alternative</th>
@@ -75,21 +75,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let result of ranking; let i = index;">
-            <td>{{ result.name }}</td>
-            <td>{{ result.score | number:'1.2-2' }}</td>
+          <tr class="table-row" *ngFor="let result of ranking; let i = index;">
+            <td>{{ result.alternativa }}</td>
+            <td>{{ result.rezultat| number:'1.2-2' }}</td>
             <td>{{i+1}}</td>
           </tr>
         </tbody>
       </table>
   
-      <h4 class="mt-2">Visual Representation:</h4>
-      <div id="chartContainer">
+      <div id="targetSection" class="card title border shadow-sm mt-5 mb-5 bg-color">
+        <h4 class="text-center py-2">Visual Data Representation</h4>
+      </div>
+      <div class="card border shadow-sm mt-5 mb-5">
+      <div id="chartContainer" style="display: flex; flex-wrap: wrap;">
         <div id="chart"></div>
         </div>
-      <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Back To Choose Method</button>
-    </div>
-
-
-    
+      </div>
+        <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Back To Choose Method</button>    
   </div>

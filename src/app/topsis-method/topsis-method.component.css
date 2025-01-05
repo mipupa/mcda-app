@@ -8,7 +8,21 @@ h1, h2 {
   color: #2c3e50;
 }
 
-.input-table, .results-table {
+.table-row:hover { 
+  background-color:beige;
+ }
+
+ /* Stiliranje prvega stolpca (levo poravnano) */
+.td:first-child, .th:first-child {
+  text-align: left;
+}
+
+/* Stiliranje ostalih stolpcev (sredinsko poravnano) */
+td:not(:first-child), th:not(:first-child) {
+  text-align: center;
+}
+
+ .input-table, .results-table {
   width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
@@ -25,7 +39,7 @@ h1, h2 {
   padding: 10px;
   border: 1px solid #ddd;
 }
-
+ 
 .input-weight, .input-type {
   width: 100%;
   padding: 8px;
@@ -50,9 +64,11 @@ h1, h2 {
   margin-top: 20px;
 }
 
+/*vsako drugo vrstico v tabeli obarvaj
 .results-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+*/
 
 .input-slider {
   width: 100%;

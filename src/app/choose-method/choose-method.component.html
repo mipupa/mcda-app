@@ -9,13 +9,8 @@
       >
         {{ method }}
       </button>
-    </div>
-    <button
-      class="btn btn-primary mt-3 mx-5"
-      [disabled]="!selectedMethod"
-      (click)="proceed()"
-    >
-      Proceed To Analysis
-    </button>
+    </div>        
   </div>
-  
+  <div class="text-center">
+  <button class="btn btn-primary mt-3 mx-5" [disabled]="!selectedMethod" (click)="proceed()">Proceed To Analysis</button>
+  </div>

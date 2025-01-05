@@ -1,4 +1,23 @@
 .table-row:hover {
-
     background-color:beige;
    }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+.th,
+.td {
+    border: 1px solid #ddd;
+    padding: 70px;
+    margin:auto;
+    text-align: center;
+  }
+
+.input-checkbox {
+    width: 20px;
+    margin:auto;
+
+  }

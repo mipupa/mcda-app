@@ -3,15 +3,14 @@
   <h4 class="text-center py-2">TOPSIS analysis method</h4>
   </div>
   <div>
-    <table class="table mt-3">
+    <table class="table mt-3 border shadow-sm"> 
       <thead>
-        <tr>
-          <th>Alternative</th>
+        <tr>          
           <th *ngFor="let column of criteria">{{ column }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of selectedData">
+        <tr class="table-row" *ngFor="let row of selectedData">
           <td>{{ row[0] }}</td>
           <td *ngFor="let value of row.slice(1)">{{ value }}</td>
         </tr>
@@ -25,7 +24,7 @@
     <h5>Set weights - importance of criterion:</h5>
 
     <form (ngSubmit)="calculateTopsis()">
-    <table class="input-table">
+    <table class="input-table border shadow-sm">
       <thead>
         <tr>
           <th>Criteria</th>
@@ -35,7 +34,7 @@
         </tr>
       </thead> 
       <tbody>
-        <tr *ngFor="let criterion of criteria; let i = index">
+        <tr *ngFor="let criterion of criteria.slice(1); let i = index">
           <td>{{ criterion }}</td>
           <td>
             <input
@@ -63,7 +62,7 @@
       </tbody>
     </table>
     <div class="total-weight">
-      Skupna utež: {{ getTotalWeight() }} / 100
+      Total Weight Checksum: {{ getTotalWeight() }} / 100
     </div>
     <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 100">Process Analysis</button>
   </form>
@@ -71,31 +70,29 @@
   
    
    <!-- Prikaz rezultatov -->
-   <div *ngIf="result.length > 0" class="results-container">
-    <h4 class="mt-2">Analysis Results:</h4>
-    <table class="results-table">
+   <div #targetSection *ngIf="result.length > 0" class="results-container">
+     <div class="card title border shadow-sm mt-2 mb-2 bg-color">
+      <h4 class="text-center py-2">TOPSIS Analysis Results</h4>
+      </div>
+    <table class="results-table border shadow-sm">
       <thead>
         <tr>
           <th>Alternative</th>
-          <th>Ranking</th>
-          
+          <th>Ranking</th>          
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let res of result; let i=index;">
-          <td>{{ res.alternativa }}</td>
-          <!--<td>{{ res.rank }}</td> -->
-          <td>{{ i+1 }}</td>
-          
+        <tr class="table-row" *ngFor="let res of result; let i=index;">
+          <td>{{ res.alternativa }}</td>         
+          <td>{{ i+1 }}</td>          
         </tr>
       </tbody>
-    </table>
-    <h4 class="mt-2">Visual Representation:</h4>
-    <div id="chartContainer">
-    <div id="chart"></div>
+    </table>    
+    <div id="targetSection" class="card title border shadow-sm mt-5 mb-5 bg-color">
+      <h4 class="text-center py-2">Visual Data Representation</h4>
+      </div>
+    <div class="card border shadow-sm mt-5 mb-5">
+     <div id="charts-container" style="display: flex; flex-wrap: wrap;"></div>
     </div>
     <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Back To Choose Method</button>
-  </div>
-
-
   </div>

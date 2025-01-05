@@ -37,6 +37,34 @@ export class DataImportComponent {
     reader.readAsArrayBuffer(target.files[0]);
   }
 
+  
+  toggleSelection(index: number, row: any): void {
+    const selectedIndex = this.selectedRows.indexOf(index);
+
+    if (selectedIndex > -1) {
+      // Odstrani vrstico iz izbire
+      this.selectedRows.splice(selectedIndex, 1);
+      this.selectedData = this.selectedRows.map(i => this.data[i]);
+    } else if (this.selectedRows.length < 3) {
+      // Dodaj vrstico v izbiro
+      this.selectedRows.push(index);
+      this.selectedData.push(row);
+    }
+
+    // Dinamično pridobi naslove stolpcev
+    const columnHeaders = this.columns; // Pridobivanje naslovov stolpcev iz this.columns
+    const dataWithHeaders = [columnHeaders, ...this.selectedData];
+    localStorage.setItem('selectedData', JSON.stringify(dataWithHeaders));
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  /*
   toggleSelection(index: number, row: any): void {
     const selectedIndex = this.selectedRows.indexOf(index);
 
@@ -53,7 +81,7 @@ export class DataImportComponent {
     // Posodobi localStorage
     localStorage.setItem('selectedData', JSON.stringify(this.selectedData));
   }
-
+*/
   proceedToAnalysis(): void {
     if (this.selectedRows.length === 3) {
       this.router.navigate(['/choose-method']);

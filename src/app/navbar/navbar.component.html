@@ -1,17 +1,33 @@
 
-<header class="p-3 text-bg-dark border rounded shadow-sm overflow-hidden bg-light">
-
-    <div class="d-flex flex-wrap align-items-center mb-2 mb-lg-0 justify-content-lg-start">
-       
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-nav" [routerLink]="['/home']">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-nav" [routerLink]="['/data-import']">Data Import</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-nav" [routerLink]="['/choose-data']">Choose Data</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-nav" [routerLink]="['/choose-method']">Choose Method</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-nav" [routerLink]="['/']">Data Export</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-nav" [routerLink]="['/']">Info</a></li>
-        </ul>       
+<nav class="navbar navbar-expand-sm navbar-light mb-3" id="neubar">
+    <div class="container">
+      <a class="navbar-brand" href="#">MCDA Web Appliction</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+          <li class="nav-item">            
+            <a class="nav-link mx-2" href="#" aria-current="page" [routerLink]="['/home']">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#" [routerLink]="['/data-import']">Data Import</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#" [routerLink]="['/choose-data']">Choose Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#" [routerLink]="['/choose-method']">Choose Method</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#" [routerLink]="['/']">Data Export</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#" [routerLink]="['/']">Info</a>
+          </li>
+          
+        </ul>
+      </div>
     </div>
-</header>
-
-<div class="container mt-2 py-2"></div>
+  </nav>

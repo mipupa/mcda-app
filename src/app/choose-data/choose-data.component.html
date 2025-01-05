@@ -1,4 +1,4 @@
-<table class="table mt-3" *ngIf="data && data.length > 0; else noDataTemplate">
+<table class="table border shadow-sm mb-2 text-center" *ngIf="data && data.length > 0; else noDataTemplate">
     <thead>
       <tr>
         <th>Choose 3 Alternatives:</th>
@@ -8,9 +8,9 @@
     <tbody>
       <tr class="table-row" *ngFor="let row of data; let i = index">
         <td>
-          <div class="form-check">
+          <div class="input-checkbox">
           <input 
-            class="form-check-input"
+            class="form-check-input input-checkbox"
             type="checkbox" 
             [checked]="selectedRows.includes(i)"
             [disabled]="!selectedRows.includes(i) && selectedRows.length >= 3"
@@ -29,8 +29,10 @@
     </div>
   </ng-template>
 
+  <div class="text-center">
   <button 
     class="btn btn-primary mt-3" 
     [disabled]="selectedRows.length !== 3" 
     (click)="proceedToAnalysis()">Proceed To Choose Method
   </button>
+  </div>

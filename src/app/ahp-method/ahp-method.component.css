@@ -1,18 +1,30 @@
 /* ahp.component.css */
+/* Stiliranje prvega stolpca (levo poravnano) */
+td:first-child, th:first-child {
+  text-align: left;
+}
+
+/* Stiliranje ostalih stolpcev (sredinsko poravnano) */
+td:not(:first-child), th:not(:first-child) {
+  text-align: center;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
+  background-color: white;
+  table-layout: fixed;
 }
 
 th,
 td {
   border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+  padding: 8px;  
 }
 
 input {
-  width: 60px;
+  width: 40px;
+  text-align: center;
 }
 
 .analyze-button {
@@ -50,12 +62,12 @@ input {
 
 .results-container {
   display: flex;
-  gap: 20px; /* Razmik med kolonami */
+  gap: 10px; /* Razmik med kolonami */
 }
 
 .results-column {
   flex: 1; /* Enakomerna širina kolon */
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #ddd; /* Opcijsko: dodaj obrobo */
   border-radius: 5px;
 }

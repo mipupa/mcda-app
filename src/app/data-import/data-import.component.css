@@ -2,3 +2,25 @@
 
  background-color:beige;
 }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .input-checkbox {
+    width: 20px;
+    margin:auto;
+
+  }
+
+.input-file {
+    width: 450px;
+  }
