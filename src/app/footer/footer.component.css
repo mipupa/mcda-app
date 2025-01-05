@@ -1,3 +1,7 @@
 .text-footer {
     font-size: small;
 }
+
+footer a {
+    color:#454545 !important;
+}

@@ -1,6 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
+@media screen and (min-width:992px) {
+   .navbar-collapse{
+    flex: grow 0; 
+   }
+    
+}
+
 body {
     background-color:rgb(255, 255, 255)
 }
@@ -8,3 +15,28 @@ body {
 html {
     scroll-behavior: smooth;
   }
+
+.bg-color {
+    background: #454545;
+    color:whitesmoke;
+}
+
+.analyze-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 10px;
+    background-color: beige;
+    color: #454545;
+    border: 2px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+  
+.analyze-button:hover {
+    background-color: rgb(220, 220, 184);
+}
+
+.title {
+    display:flex;
+    align-self: center;  
+} 

@@ -2,10 +2,12 @@
 
   button {
     cursor: pointer;
+    
   }
   button.active {
     background-color:beige;
     color: rgb(0, 0, 0);
+    border: none;
   }
 
   .button-hover:hover {

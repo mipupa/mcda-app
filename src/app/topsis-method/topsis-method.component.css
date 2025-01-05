@@ -46,29 +46,9 @@ td:not(:first-child), th:not(:first-child) {
   box-sizing: border-box;
 }
 
-.analyze-button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.analyze-button:hover {
-  background-color: #27ae60;
-}
-
 .results-container {
   margin-top: 20px;
 }
-
-/*vsako drugo vrstico v tabeli obarvaj
-.results-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-*/
 
 .input-slider {
   width: 100%;
@@ -83,21 +63,6 @@ td:not(:first-child), th:not(:first-child) {
   font-weight: bold;
   text-align: right;
 }
-.analyze-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-}
-
-.bg-color {
-  background-color: #22c968;
-  color:whitesmoke;
-}
-
-.title {
-  display:flex;
-  align-self: center;  
-}  
-
 
 #chartContainer {
   display: flex;

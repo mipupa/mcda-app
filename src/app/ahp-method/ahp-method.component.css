@@ -8,47 +8,32 @@ td:first-child, th:first-child {
 td:not(:first-child), th:not(:first-child) {
   text-align: center;
 }
+.table-row:hover {
+  background-color:beige;
+ }
 
-table {
+.table {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-  table-layout: fixed;
+  table-layout:auto;
 }
 
-th,
-td {
+th,td {
   border: 1px solid #ddd;
-  padding: 8px;  
+  padding: 8px; 
+  font-size: 15px; 
+}
+
+h5 {
+  font-size: medium;
 }
 
 input {
-  width: 40px;
+  width: 60px;
   text-align: center;
-}
-
-.analyze-button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.analyze-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-}
-
-.analyze-button:hover {
-  background-color: #27ae60;
-}
-
-.bg-color {
-  background-color: #22c968;
-  color:whitesmoke;
+  background-color: beige;
+  border: 1px solid #ddd;
 }
 
 .bg-color-blue {
@@ -66,8 +51,92 @@ input {
 }
 
 .results-column {
-  flex: 1; /* Enakomerna širina kolon */
+  flex: auto; /* Enakomerna širina kolon */
   padding: 8px;
   border: 1px solid #ddd; /* Opcijsko: dodaj obrobo */
   border-radius: 5px;
+}
+
+.d-grid {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px; /* Razmak med kolonama */
+}
+
+.column {
+  display:-webkit-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  text-align: justify;
+}
+
+
+/*CSS Style for 2 columns AHP Matrix Tables Display*/
+.container-matrix {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  
+}
+
+.col-md-6 {
+  width: 50%; /* Adjust as needed */
+  margin-bottom: 1rem;
+  padding-left: 5px;
+  padding-right: 5px;
+  
+}
+
+.input-table, .results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  table-layout: fixed;
+}
+
+.input-table, .results-table {
+  width: 100%;
+  margin: 5px auto;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.input-table th, .results-table th {
+ background-color: #3498db;
+  color: white;
+  padding: 10px;
+}
+
+.input-table td, .results-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.table-row:hover {
+  background-color:beige;
+ }
+
+ #chartContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+}
+
+.results-container {
+  margin-top: 10px;
 }
