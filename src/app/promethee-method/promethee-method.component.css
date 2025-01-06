@@ -1,0 +1,76 @@
+.promethee-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  h1, h2 {
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  .table-row:hover { 
+    background-color:beige;
+   }
+  
+   /* Stiliranje prvega stolpca (levo poravnano) */
+  .td:first-child, .th:first-child {
+    text-align: left;
+  }
+  
+  /* Stiliranje ostalih stolpcev (sredinsko poravnano) */
+  td:not(:first-child), th:not(:first-child) {
+    text-align: center;
+  }
+  
+   .input-table, .results-table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .input-table th, .results-table th {
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+  }
+  
+  .input-table td, .results-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+   
+  .input-weight, .input-type {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .results-container {
+    margin-top: 20px;
+  }
+  
+  .input-slider {
+    width: 100%;
+    margin: 5px 0;
+  }
+  .input-table td {
+    text-align: center;
+    padding: 5px;
+  }
+  .total-weight {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: right;
+  }
+  
+  #chartContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  svg {
+    width: 100%;
+    height: auto;
+  }

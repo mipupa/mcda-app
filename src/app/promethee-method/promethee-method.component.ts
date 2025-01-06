@@ -1,121 +1,106 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import * as topsis from 'topsis2';
+import { PrometheeService } from './services/promethee.service';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-topsis-method',
-  templateUrl: './topsis-method.component.html',
-  styleUrl: './topsis-method.component.css'
+  selector: 'app-promethee-method',
+  templateUrl: './promethee-method.component.html',
+  styleUrl: './promethee-method.component.css'
 })
-export class TopsisMethodComponent implements OnInit{
+export class PrometheeMethodComponent implements OnInit {
 
   @ViewChild('targetSection') targetSection!: ElementRef;
 
-  alternatives: any[] = []; // Podatki o alternativah
-  criteria: string[] = ['Criterion1', 'Criterion2', 'Criterion3']; // Kriteriji
-  result: any[] = []; // Rezultati TOPSIS
-  weights: number[] = []; // Teže kriterijev, privzeto
-  types: ('cost' | 'benefit')[] = ['cost', 'benefit', 'benefit']; // Tipi kriterijev
-  selectedData: any[] = [];  
+  selectedData: any[] = [];
+  criteria: string[] = [];
+  weights: number[] = [0.3, 0.5, 0.2];
+  totalWeight: number = 0;
+  types: string[] = [];
+  result: { alternativa: string, rank: string, rezultat: number, positiveFlow: number, negativeFlow: number }[] = [];
 
 
-  constructor(private cdr: ChangeDetectorRef) {}
+
+  constructor(private cdr: ChangeDetectorRef, private promethee: PrometheeService) { }
 
   ngOnInit(): void {
-    
-    const storedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
-    const selectedData = localStorage.getItem('selectedData');
-    if (selectedData) {
-      this.selectedData = JSON.parse(selectedData);
-      // Glave stolpcev pridobimo iz prve vrstice
+
+    // Fetch selected data and extract criteria
+    this.selectedData = this.promethee.getSelectedData();
+    if (this.selectedData.length > 0) {
       this.criteria = this.selectedData[0];
-      // Odstranimo glave stolpcev iz podatkov
-      this.selectedData = this.selectedData.slice(1);
-    } else {
-      alert('Ni izbranih podatkov v localStorage!');
+      this.types = Array(this.criteria.length - 1).fill('beneficial'); // Default criteria types
     }
-   
-    this.alternatives=storedData.slice(1).map((data: any) => ({name: data[0], criteriaValues: [data[1], data[2], data[3]],}));
-    this.weights = [20, 40, 40];
-    this.types = ['benefit', 'cost', 'benefit'];
-
-    console.log('Alternatives:', this.alternatives);
-   
   }
 
-  
- // Funkcija za spremembo drsnika
- onSliderChange(index: number, event: Event): void {
-  const newValue = +(event.target as HTMLInputElement).value;
-  const totalOtherWeights = this.weights.reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0);
-  const maxAllowed = 100 - newValue;
-  this.weights[index] = newValue;
-    if (totalOtherWeights > maxAllowed) {
-    // Prilagodi ostale drsnike sorazmerno
-    const otherIndexes = this.weights.map((_, i) => i).filter(i => i !== index);
-    const [first, second] = otherIndexes;
-    const ratio = this.weights[first] / (this.weights[first] + this.weights[second]);
-    this.weights[first] = Math.round(ratio * maxAllowed);
-    this.weights[second] = maxAllowed - this.weights[first];
+
+
+  updateWeights(index: number, value: number): void {
+    const remainingWeight = 1 - value; // Preostanek teže za razporeditev
+    let otherWeightsSum = 0;
+
+    // Prilagodimo ostale uteži
+    for (let i = 0; i < this.weights.length; i++) {
+      if (i !== index) {
+        if (value === 1) {
+          // Če je ena utež nastavljena na 1, druge postavimo na 0
+          this.weights[i] = 0;
+        } else {
+          // Prilagodimo ostale uteži sorazmerno
+          otherWeightsSum += this.weights[i];
+        }
+      }
+    }
+
+    if (value !== 1) {
+      for (let i = 0; i < this.weights.length; i++) {
+        if (i !== index && otherWeightsSum > 0) {
+          this.weights[i] = (this.weights[i] / otherWeightsSum) * remainingWeight;
+        }
+      }
+    }
+
+    this.totalWeight = this.weights.reduce((sum, w) => sum + w, 0);
   }
-}
 
-// Funkcija za izračun trenutne skupne uteži
-getTotalWeight(): number {
-  return this.weights.reduce((sum, weight) => sum + weight, 0);
-}
+  isDisabled(index: number): boolean {
+    // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
+    return this.weights.some(w => w === 1) && this.weights[index] !== 1;
+  }
 
- //Topsis funkcija 
-  calculateTopsis(): void {    
-  
-  // Resetiraj prejšnje rezultate
-  this.result = [];
+  // Funkcija za izračun trenutne skupne uteži
+  getTotalWeight(): number {
+    return this.weights.reduce((sum, weight) => sum + weight, 0);
+  }
 
-  // Priprava kriterijev in matrike
-  const criteria = this.weights.map((weight, index) => ({
-    weight: weight,
-    type: this.types[index],   
-  }));
-  console.log('criteria:',criteria);
+  //Promethee method
+  calculatePromethee(): void {
+    try {
+      const { rankedAlternatives } = this.promethee.runPromethee(this.weights, this.types);
+      this.result = rankedAlternatives.map((item, index) => ({
+        alternativa: item.alternative,
+        rank: (index + 1).toString(),
+        rezultat: item.score,
+        positiveFlow: item.positiveFlow,
+        negativeFlow: item.negativeFlow
+      }));
+    } catch (error) {
+      console.error('Error during Promethee analysis:', error);
+    }
 
-  const matrix = this.alternatives.map(alt => alt.criteriaValues);
+    // Zahtevaj,da Angular, ponovno preveri DOM, preden izrišemo graf
+    this.cdr.detectChanges();
 
-  console.log('Kriteriji:', criteria);
-  console.log('Matrika:', matrix);
+    // Počisti obstoječe grafe in izriši nove
 
- 
- try {
-  const ranked = topsis.rank(criteria, matrix, true);
-  // Prikaz vseh pomembnih rezultatov na strani  
-  console.log('Ranked:', ranked); // Debug 
+    this.createCharts();
 
-  // Pretvori ranked v pravilno obliko za tabelo
-  this.result = Object.entries(ranked).map(([key, value]) => ({
-    alternativa: this.alternatives[+value].name,
-    rank: key, // Pravilno določimo razvrstitev glede na rank
-    rezultat: matrix[+value][0] // Ali drugačno vrednost, če imaš boljši kazalnik
-  }));
+    //scrolldown page
+    this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
-  console.log('Sorted Results:', this.result); // Debug
-   // Shranjevanje v localStorage
-   localStorage.setItem('TOPSIS_Results', JSON.stringify(this.result));
-   
-} catch (error) {
-  console.error('Napaka pri analizi:', error);
-}
-// Zahtevaj,da Angular, ponovno preveri DOM, preden izrišemo graf
-this.cdr.detectChanges();
+  //implementacija metode createChart
 
-// Počisti obstoječe grafe in izriši nove
-this.createCharts();
-
-//scrolldown page
-this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-//implementacija metode createChart
-
-//createCharts Method
+  //createCharts Method
   createCharts(): void {
     const storedResults = localStorage.getItem('selectedData');
     if (!storedResults) {
@@ -252,5 +237,5 @@ this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'st
     });
 
   }
-    
+
 }

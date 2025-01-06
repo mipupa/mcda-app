@@ -38,7 +38,7 @@ export class ChooseMethodComponent {
         this.router.navigate(['/topsis-method']);
         break;
       case 'PROMETHEE II':
-        this.router.navigate(['/promethee-ii-method']);
+        this.router.navigate(['/promethee-method']);
         break;
       default:
         alert('Nepoznan izbor metode.');

@@ -7,6 +7,7 @@ import { AhpMethodComponent } from './ahp-method/ahp-method.component';
 import { TopsisMethodComponent } from './topsis-method/topsis-method.component';
 import { HomeComponent } from './home/home.component';
 import { ChooseDataComponent } from './choose-data/choose-data.component';
+import { PrometheeMethodComponent } from './promethee-method/promethee-method.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,10 @@ const routes: Routes = [
   { path: 'wsm-method', component: WsmMethodComponent },
   { path: 'ahp-method', component: AhpMethodComponent },
   { path: 'topsis-method', component: TopsisMethodComponent },
-  { path: 'home', component:HomeComponent}
+  { path: 'promethee-method', component: PrometheeMethodComponent},
+  { path: 'home', component:HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home' }
   
 
 

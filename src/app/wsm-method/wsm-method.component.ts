@@ -6,7 +6,7 @@ import * as d3 from 'd3';
   templateUrl: './wsm-method.component.html',
   styleUrl: './wsm-method.component.css'
 })
-export class WsmMethodComponent {
+export class WsmMethodComponent implements OnInit {
 
   @ViewChild('targetSection') targetSection!: ElementRef;
 
@@ -29,7 +29,7 @@ export class WsmMethodComponent {
 
     } else {
       alert('No data in localStorage!');
-    }
+    } 
   }
 
   updateWeights(index: number, value: number): void {

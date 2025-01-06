@@ -1,11 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AhpService } from './services/ahp.service';
 import * as d3 from 'd3';
-import 'd3-selection';
-import 'd3-scale';
-import 'd3-axis';
-import 'd3-shape';
-import 'd3-scale-chromatic';
 
 @Component({
   selector: 'app-ahp-method',
