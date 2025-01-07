@@ -18,6 +18,7 @@ export class PrometheeMethodComponent implements OnInit {
   types: string[] = [];
   result: { alternativa: string, rank: string, rezultat: number, positiveFlow: number, negativeFlow: number }[] = [];
 
+  alternatives: any[] = []; // Podatki o alternativah    
 
 
   constructor(private cdr: ChangeDetectorRef, private promethee: PrometheeService) { }
@@ -29,10 +30,22 @@ export class PrometheeMethodComponent implements OnInit {
     if (this.selectedData.length > 0) {
       this.criteria = this.selectedData[0];
       this.types = Array(this.criteria.length - 1).fill('beneficial'); // Default criteria types
+      const storedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
+      const selectedData = localStorage.getItem('selectedData');
+      if (selectedData) {
+        this.selectedData = JSON.parse(selectedData);
+        // Glave stolpcev pridobimo iz prve vrstice
+        this.criteria = this.selectedData[0];
+        // Odstranimo glave stolpcev iz podatkov
+        this.selectedData = this.selectedData.slice(1);
+      } else {
+        alert('Ni izbranih podatkov v localStorage!');
+      }
+
+      this.alternatives = storedData.slice(1).map((data: any) => ({ name: data[0], criteriaValues: [data[1], data[2], data[3]], }));
+
     }
   }
-
-
 
   updateWeights(index: number, value: number): void {
     const remainingWeight = 1 - value; // Preostanek teže za razporeditev

@@ -39,12 +39,12 @@
           <td>
             <input
               type="range"
-              [value]="weights[i]"
+              [value]="weights[i].toFixed(1)"
               (input)="onSliderChange(i, $event)"
               class="input-slider"
               min="0"
-              max="100"
-              step="10"
+              max="1"
+              step="0.2"
             />
           </td>
           <td>{{ weights[i] }}</td>
@@ -54,17 +54,17 @@
               [ngModelOptions]="{ standalone: true }"
               class="input-type"
             >
-              <option value="cost">Cost</option>
-              <option value="benefit">Benefit</option>
+              <option value="beneficial">Beneficial</option>
+              <option value="non-beneficial">Non-Beneficial</option>
             </select>
           </td>
         </tr>
       </tbody>
     </table>
     <div class="total-weight">
-      Total Weight Checksum: {{ getTotalWeight() }} / 100
+      Total Weight Checksum: {{ getTotalWeight() }} / 1
     </div>
-    <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 100">Process Analysis</button>
+    <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 1">Process Analysis</button>
   </form>
   </div>
   
@@ -78,17 +78,23 @@
       <thead>
         <tr>
           <th>Alternative</th>
-          <th>Ranking</th>          
+          <th>Best Distance</th>
+          <th>Worst Distance</th>
+          <th>Score</th>
+          <th>Ranking</th>       
         </tr>
       </thead>
       <tbody>
         <tr class="table-row" *ngFor="let res of result; let i=index;">
-          <td>{{ res.alternativa }}</td>         
-          <td>{{ i+1 }}</td>          
+          <td>{{ res.alternativa }}</td>
+          <td>{{ res.bestDistance.toFixed(2) }}</td>
+          <td>{{ res.worstDistance.toFixed(2) }}</td>
+          <td>{{ res.rezultat.toFixed(2) }}</td>
+          <td>{{ res.rank }}</td>         
         </tr>
       </tbody>
     </table>    
-    <div id="targetSection" class="card title border shadow-sm mt-5 mb-5 bg-color">
+    <div id="targetSection" class="card flex title border shadow-sm mt-5 mb-5 bg-color">
       <h4 class="text-center py-2" #targetSection>Visual Data Representation</h4>
       </div>
     <div class="card border shadow-sm mt-5 mb-5 bg-light">
