@@ -47,33 +47,29 @@ export class PrometheeMethodComponent implements OnInit {
     }
   }
 
-  updateWeights(index: number, value: number): void {
-    const remainingWeight = 1 - value; // Preostanek teže za razporeditev
-    let otherWeightsSum = 0;
+  // Funkcija za spremembo drsnika
+onSliderChange(index: number, event: Event): void {
+  const newValue = parseFloat((+(event.target as HTMLInputElement).value).toFixed(1));
+  const totalOtherWeights = parseFloat(
+    this.weights
+      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0)
+      .toFixed(1)
+  );
+  const maxAllowed = parseFloat((1 - newValue).toFixed(1));
+  this.weights[index] = newValue;
 
-    // Prilagodimo ostale uteži
-    for (let i = 0; i < this.weights.length; i++) {
-      if (i !== index) {
-        if (value === 1) {
-          // Če je ena utež nastavljena na 1, druge postavimo na 0
-          this.weights[i] = 0;
-        } else {
-          // Prilagodimo ostale uteži sorazmerno
-          otherWeightsSum += this.weights[i];
-        }
-      }
-    }
-
-    if (value !== 1) {
-      for (let i = 0; i < this.weights.length; i++) {
-        if (i !== index && otherWeightsSum > 0) {
-          this.weights[i] = (this.weights[i] / otherWeightsSum) * remainingWeight;
-        }
-      }
-    }
-
-    this.totalWeight = this.weights.reduce((sum, w) => sum + w, 0);
+  if (totalOtherWeights > maxAllowed) {
+    // Prilagodi ostale drsnike sorazmerno
+    const otherIndexes = this.weights
+      .map((_, i) => i)
+      .filter(i => i !== index);
+    const [first, second] = otherIndexes;
+    const ratio = this.weights[first] / (this.weights[first] + this.weights[second]);
+    
+    this.weights[first] = parseFloat((ratio * maxAllowed).toFixed(1));
+    this.weights[second] = parseFloat((maxAllowed - this.weights[first]).toFixed(1));
   }
+}
 
   isDisabled(index: number): boolean {
     // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež

@@ -13,7 +13,7 @@ export class TopsisMethodComponent implements OnInit {
 
   selectedData: any[] = [];
   criteria: string[] = [];
-  weights: number[] = [];
+  weights: number[] = [0.2,0.5,0.3];
   types: ('beneficial' | 'non-beneficial')[] = ['beneficial', 'non-beneficial', 'beneficial']; // Tipi kriterijev
   result: any[]=[]; // Rezultati TOPSIS
    
@@ -29,7 +29,7 @@ export class TopsisMethodComponent implements OnInit {
     if (data) {
       this.selectedData = JSON.parse(data);
       this.criteria = this.selectedData[0];
-      this.weights = Array(this.criteria.length - 1).fill(1 / (this.criteria.length - 1)); // Privzete uteži
+      //this.weights = Array(this.criteria.length - 1).fill(1 / (this.criteria.length - 1)); // Privzete uteži
       this.types = Array(this.criteria.length - 1).fill('beneficial'); // Privzeta vrsta kriterijev
 
       const storedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
@@ -51,20 +51,33 @@ export class TopsisMethodComponent implements OnInit {
 
 
   // Funkcija za spremembo drsnika
-  onSliderChange(index: number, event: Event): void {
-    const newValue = +(event.target as HTMLInputElement).value;
-    const totalOtherWeights = this.weights.reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0);
-    const maxAllowed = 1 - newValue;
-    this.weights[index] = newValue;
-    if (totalOtherWeights > maxAllowed) {
-      // Prilagodi ostale drsnike sorazmerno
-      const otherIndexes = this.weights.map((_, i) => i).filter(i => i !== index);
-      const [first, second] = otherIndexes;
-      const ratio = this.weights[first] / (this.weights[first] + this.weights[second]);
-      this.weights[first] = Math.round(ratio * maxAllowed);
-      this.weights[second] = maxAllowed - this.weights[first];
-    }
+onSliderChange(index: number, event: Event): void {
+  const newValue = parseFloat((+(event.target as HTMLInputElement).value).toFixed(1));
+  const totalOtherWeights = parseFloat(
+    this.weights
+      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0)
+      .toFixed(1)
+  );
+  const maxAllowed = parseFloat((1 - newValue).toFixed(1));
+  this.weights[index] = newValue;
+
+  if (totalOtherWeights > maxAllowed) {
+    // Prilagodi ostale drsnike sorazmerno
+    const otherIndexes = this.weights
+      .map((_, i) => i)
+      .filter(i => i !== index);
+    const [first, second] = otherIndexes;
+    const ratio = this.weights[first] / (this.weights[first] + this.weights[second]);
+    
+    this.weights[first] = parseFloat((ratio * maxAllowed).toFixed(1));
+    this.weights[second] = parseFloat((maxAllowed - this.weights[first]).toFixed(1));
   }
+}
+
+isDisabled(index: number): boolean {
+  // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
+  return this.weights.some(w => w === 1) && this.weights[index] !== 1;
+}
 
   // Funkcija za izračun trenutne skupne uteži
   getTotalWeight(): number {
