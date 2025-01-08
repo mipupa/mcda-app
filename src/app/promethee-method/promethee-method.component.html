@@ -70,7 +70,7 @@
      <!-- Prikaz rezultatov -->
      <div #targetSection *ngIf="result.length > 0" class="results-container">
        <div class="card title border shadow-sm mt-2 mb-2 bg-color">
-        <h4 class="text-center py-2">PROMETHEE Analysis Results</h4>
+        <h4 class="text-center py-2">PROMETHEE II Analysis Results</h4>
         </div>
       <table class="results-table border shadow-sm">
         <thead>
@@ -92,11 +92,13 @@
           </tr>
         </tbody>
       </table>    
-      <div id="targetSection" class="card title border shadow-sm mt-5 mb-5 bg-color">
+      <div id="targetSection" class="card title border shadow-sm mt-2 mb-2 bg-color">
         <h4 class="text-center py-2" #targetSection>Visual Data Representation</h4>
         </div>
-      <div class="card border shadow-sm mt-5 mb-5 bg-light">
-       <div id="chart-container" style="display: flex; flex-wrap: wrap;"></div>
+      <div class="card border shadow-sm mt-2 mb-2 bg-light">
+        <div id="chartContainer" style="display: flex; flex-wrap: wrap;">
+          <div id="chart-container"></div>
+          </div>
       </div>
       <button type="submit" class="analyze-button" [routerLink]="['/choose-method']">Back To Choose Method</button>
     </div>

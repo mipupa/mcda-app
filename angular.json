@@ -58,7 +58,7 @@
             "development": {
               "optimization": true,
               "extractLicenses": false,
-              "sourceMap": true,
+              "sourceMap": true
                             
             }
           },
@@ -99,10 +99,8 @@
             ],
             "scripts": []
           }
-        },
-        "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
         }
+        
       }
     }
   }

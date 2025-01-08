@@ -40,3 +40,23 @@ html {
     display:flex;
     align-self: center;  
 } 
+
+
+/* Nastavi osnovne lastnosti za telo in html */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Ovijalni element za celotno vsebino */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Glavni del strani naj zavzame preostali prostor */
+main {
+    flex: 1;
+}
+

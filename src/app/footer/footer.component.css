@@ -3,5 +3,10 @@
 }
 
 footer a {
-    color:#454545 !important;
+    
+    color:#242424 !important;
+}
+
+footer {
+    background: #ddc1a08e !important;
 }

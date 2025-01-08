@@ -4,7 +4,7 @@
 }
 
 #neubar {
-    background: beige;
+    background: #ddc1a08e;
     box-shadow: 1px 1px 1px rgba(27, 26, 26, 0.4);
     height: 4em;
     font-size: 18px;   
@@ -19,7 +19,7 @@
 
   .nav-item:hover {
     border-radius: 6px;
-    background: linear-gradient(145deg, #ffe7ca, beige);
+    background: linear-gradient(145deg, #ddc1a08e, beige);
     box-shadow:  2px 2px 2px #ddc1a0,
                  -2px -2px 2px #f7e5cc;
   }

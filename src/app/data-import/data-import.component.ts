@@ -16,6 +16,8 @@ export class DataImportComponent {
   selectedRows: number[] = []; // Indeksi izbranih vrstic
   selectedData: any[] = [];   // Izbrani podatki za shranjevanje
 
+  fortuneGlobalData(): void {}
+
   onFileChange(event: any): void {
     const target: DataTransfer = <DataTransfer>event.target;
     if (target.files.length !== 1) throw new Error('Only one file at a time.');

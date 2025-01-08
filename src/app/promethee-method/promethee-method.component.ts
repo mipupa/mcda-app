@@ -113,7 +113,7 @@ onSliderChange(index: number, event: Event): void {
   createCharts(): void {
     const storedResults = localStorage.getItem('selectedData');
     if (!storedResults) {
-      console.error('Ni podatkov za izris grafov v localStorage.');
+      console.error('Ni podatkov za izris grafov.');
       return;
     }
 
@@ -129,8 +129,8 @@ onSliderChange(index: number, event: Event): void {
         rezultat: +(row[metricIndex + 1] as number),
       }));
 
-      const width = 400;
-      const height = 500;
+      const width = 300;
+      const height = 400;
       const margin = { top: 50, right: 30, bottom: 80, left: 70 };
 
       const chartContainer = d3
@@ -159,7 +159,7 @@ onSliderChange(index: number, event: Event): void {
       // Definiramo barvno lestvico (od modre do rdeče)
       const colorScale = d3.scaleLinear<string>()
         .domain([0, d3.max(data, d => d.rezultat)!]) // Najnižja in najvišja vrednost
-        .range(['grey', '#454545']); // Barvni prehod od modre do rdeče
+        .range(['grey', 'blue']); // Barvni prehod stolpca grafa
 
       // Dodajanje gradienta v SVG
       const gradient = svg.append('defs')
@@ -173,10 +173,10 @@ onSliderChange(index: number, event: Event): void {
       // Definiramo barvne stopnje v gradientu
       gradient.append('stop')
         .attr('offset', '0%') // Spodnja barva
-        .attr('stop-color', 'grey');
+        .attr('stop-color', '#ddc1a08e');
       gradient.append('stop')
         .attr('offset', '100%') // Zgornja barva
-        .attr('stop-color', '#454545');
+        .attr('stop-color', '#3498db');
 
       // Dodajanje stolpcev z gradientom
       svg
@@ -240,7 +240,7 @@ onSliderChange(index: number, event: Event): void {
         .attr('y', d => y(d.rezultat) - 5) // Nekoliko nad vrhom stolpca
         .attr('text-anchor', 'middle') // Poravnava besedila na sredino stolpca
         .style('font-size', '14px') // Velikost pisave
-        .style('font-weight', 'bold') // Krepka pisava (opcijsko)
+        .style('font-weight', 'normal') // Krepka pisava (opcijsko)
         .text(d => d.rezultat) // Vrednost, ki jo prikažemo
 
     });

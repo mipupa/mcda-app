@@ -1,16 +1,20 @@
 /* choose-method.component.css */
+button {
+  cursor: pointer;
 
-  button {
-    cursor: pointer;
-    
-  }
-  button.active {
-    background-color:beige;
-    color: rgb(0, 0, 0);
-    border: none;
-  }
+}
 
-  .button-hover:hover {
-    background-color: beige;
-  }
-  
+button.active {
+  background-color: beige;
+  color: rgb(0, 0, 0);
+  border: 1px solid;
+}
+
+.button-hover:hover {
+  background-color: rgb(217, 217, 188)!important;
+}
+
+.card-choose-method {
+  width: 30%;
+  justify-self:center;
+}

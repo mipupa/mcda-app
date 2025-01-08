@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,10 +6,18 @@ import { Router } from '@angular/router';
   templateUrl: './choose-method.component.html',
   styleUrl: './choose-method.component.css'
 })
-export class ChooseMethodComponent {
+export class ChooseMethodComponent implements OnInit {
 
+  isData: boolean = false;
   methods: string[] = ['WSM', 'AHP', 'TOPSIS', 'PROMETHEE II']; // Dodaj metode po potrebi
   selectedMethod: string | null = null;
+
+  ngOnInit(): void {
+    const selectedData = localStorage.getItem('selectedData');
+    if (selectedData?.length) {
+      this.isData = true;
+    }
+  }
 
   constructor(private router: Router) {}
 
@@ -19,7 +27,7 @@ export class ChooseMethodComponent {
 
   proceed(): void {
     if (!this.selectedMethod) {
-      alert('Prosimo, izberite metodo.');
+      alert('Please, choose analysis method.');
       return;
     }
 

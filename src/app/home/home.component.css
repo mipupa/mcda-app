@@ -1,0 +1,9 @@
+.image-size {
+    width: 150px; /* Fixed width */
+    height:150px; /* Fixed height */
+    object-fit: cover;
+}
+
+.card:hover .card-title {
+    color: #007bff; /* Highlight title on hover */
+}
