@@ -15,7 +15,7 @@ export class PrometheeMethodComponent implements OnInit {
   criteria: string[] = [];
   weights: number[] = [0.3, 0.5, 0.2];
   totalWeight: number = 0;
-  types: string[] = [];
+  types: string[] = [];  
   result: { alternativa: string, rank: string, rezultat: number, positiveFlow: number, negativeFlow: number, netFlow: number }[] = [];
 
   alternatives: any[] = []; // Podatki o alternativah    

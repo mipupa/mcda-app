@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class PrometheeService {
 
-  constructor() {}
+  constructor() { }
 
   // Method to fetch data from localStorage
   getSelectedData(): any[] {
@@ -68,7 +68,6 @@ export class PrometheeService {
     const alternatives = data.slice(1).map(row => row[0]);
     const preferenceMatrix = this.calculatePreferences(data, weights, criteriaTypes);
     const flows = this.calculateFlows(preferenceMatrix);
-
     const rankedAlternatives = alternatives.map((alternative, index) => ({
       alternative,
       score: flows.net[index],

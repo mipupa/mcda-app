@@ -27,7 +27,7 @@ html {
     padding: 10px 10px;
     background-color: beige;
     color: #454545;
-    border: 2px;
+    border: 1px solid;
     border-radius: 8px;
     cursor: pointer;
 }
@@ -59,4 +59,38 @@ html, body {
 main {
     flex: 1;
 }
+
+/* Splošna prilagoditev za vse toasterje */
+.toast {
+    background-color: #282c34; /* Nastavi barvo ozadja */
+    color: #ffffff; /* Nastavi barvo teksta */
+  }
+  
+  /* Prilagoditev za uspeh */
+  .toast-success {
+    background-color: #cb6b45; /* Zeleno ozadje */
+    color: #ffffff;
+  }
+  
+  /* Prilagoditev za napake */
+  .toast-error {
+    background-color: #f44336; /* Rdeče ozadje */
+    color: #ffffff;
+  }
+  
+  /* Prilagoditev za opozorila */
+  .toast-warning {
+    background-color: #ff9800; /* Oranžno ozadje */
+    color: #000000;
+  }
+  
+  /* Prilagoditev za informacijo */
+  .toast-info {
+    background-color: #2196f3; /* Modro ozadje */
+    color: #ffffff;
+  }
+
+.toast-progress {
+    background-color: #ffffff; /* Zelen progress bar */
+  }
 

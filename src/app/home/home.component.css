@@ -1,9 +1,17 @@
-.image-size {
-    width: 150px; /* Fixed width */
-    height:150px; /* Fixed height */
-    object-fit: cover;
-}
-
 .card:hover .card-title {
     color: #007bff; /* Highlight title on hover */
+    cursor: pointer;
+}
+
+.card-img-custom {
+    height: 150px; /* Nastavite želeno višino */
+    object-fit: cover; /* Ohranja razmerje stranic in zapolni prostor */
+    width: 100%; /* Prilagodi širino, da ustreza kartici */
+    cursor:pointer;
+}
+
+.video-wrapper iframe {
+    width: 100%; /* Prilagodi širino iframe */
+    height: 100%; /* Prilagodi višino iframe */
+    object-fit: cover; /* Ohranja razmerje stranic */
 }

@@ -14,6 +14,7 @@ import { TopsisMethodComponent } from './topsis-method/topsis-method.component';
 import { HomeComponent } from './home/home.component';
 import { PrometheeMethodComponent } from './promethee-method/promethee-method.component';
 import { SelectDataComponent } from './select-data/select-data.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,15 @@ import { SelectDataComponent } from './select-data/select-data.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot({ // Globalna konfiguracija Toastr
+      timeOut: 3000, // Trajanje obvestila
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true, // Omogoči progress bar
+      progressAnimation: 'increasing', // Animacija ('increasing' ali 'decreasing')
+      
+    }),
 
   ],
   providers: [],

@@ -104,8 +104,6 @@ export class TopsisService {
     const { idealBest, idealWorst } = this.determineIdealSolutions(weightedMatrix, criteriaTypes);
     const { bestDistances, worstDistances } = this.calculateDistances(weightedMatrix, idealBest, idealWorst);
     const scores = this.calculateScores(bestDistances, worstDistances);
-
-
     const rankedAlternatives = alternatives.map((alternative, index) => ({
       alternative,
       score: scores[index],
@@ -114,7 +112,7 @@ export class TopsisService {
       idealBest: idealBest[index],
       idealWorst: idealWorst[index],
     })).sort((a, b) => b.score - a.score);
-    localStorage.setItem('TOPSIS_RankedAlternatives', JSON.stringify(rankedAlternatives));
+    //localStorage.setItem('TOPSIS_RankedAlternatives', JSON.stringify(rankedAlternatives));
 
     // Add rank to each alternative and save to localStorage
     const resultsWithRank = rankedAlternatives.map((item, index) => ({

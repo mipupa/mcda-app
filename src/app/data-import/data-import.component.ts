@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-data-import',
@@ -9,7 +10,7 @@ import * as XLSX from 'xlsx';
 })
 export class DataImportComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
 
   isData:boolean = false;
   data: any[] = [];
@@ -39,6 +40,7 @@ export class DataImportComponent implements OnInit {
       localStorage.setItem('importedData', JSON.stringify(jsonData));
   
       console.log('Podatki uspešno shranjeni v localStorage pod ključem "importedData".');
+      this.toastr.success('Data imported successfuly.');
     } catch (error) {
       console.error('Napaka:', error);
     }
@@ -70,7 +72,8 @@ export class DataImportComponent implements OnInit {
             
     };
     reader.readAsArrayBuffer(target.files[0]);
-    
+    this.isData=true;
+    this.toastr.success('Data imported successfuly.');
   }
  
    proceedToSelectData() {

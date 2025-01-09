@@ -57,11 +57,11 @@ export class AhpService {
     return selectedData.length;
   }
 
-   /**
-   * Calculate consistency of the comparison matrix.
-   * @returns An object containing CR, CI, lambdaMax, and isConsistent.
-   */
-   public calculateConsistency(): { CR: number; CI: number; lambdaMax: number; isConsistent: boolean } {
+  /**
+  * Calculate consistency of the comparison matrix.
+  * @returns An object containing CR, CI, lambdaMax, and isConsistent.
+  */
+  public calculateConsistency(): { CR: number; CI: number; lambdaMax: number; isConsistent: boolean } {
     const n = this.comparisonMatrix.length;
     const RI = n === 3 ? 0.58 : 0; // Random index for n=3
 
