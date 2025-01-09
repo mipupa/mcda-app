@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 
@@ -7,17 +7,50 @@ import * as XLSX from 'xlsx';
   templateUrl: './data-import.component.html',
   styleUrl: './data-import.component.css'
 })
-export class DataImportComponent {
+export class DataImportComponent implements OnInit {
 
   constructor(private router: Router) {}
 
+  isData:boolean = false;
   data: any[] = [];
   columns: string[] = [];
-  selectedRows: number[] = []; // Indeksi izbranih vrstic
-  selectedData: any[] = [];   // Izbrani podatki za shranjevanje
+  //selectedRows: number[] = []; // Indeksi izbranih vrstic
+  //selectedData: any[] = [];   // Izbrani podatki za shranjevanje
 
-  fortuneGlobalData(): void {}
+  ngOnInit(): void {
+    
+  }
 
+  //Import from JSON file inside app method
+  async importJsonToLocalStorage(filePath: string): Promise<void> {
+    try {
+      // Preberemo datoteko z uporabo fetch
+      const response = await fetch(filePath);
+      
+      // Preverimo, ali je zahteva uspela
+      if (!response.ok) {
+        throw new Error(`Napaka pri branju datoteke: ${response.statusText}`);
+      }
+      
+      // Parsiramo JSON vsebino
+      const jsonData = await response.json();
+  
+      // Shranimo podatke v localStorage pod ključem "importedData"
+      localStorage.setItem('importedData', JSON.stringify(jsonData));
+  
+      console.log('Podatki uspešno shranjeni v localStorage pod ključem "importedData".');
+    } catch (error) {
+      console.error('Napaka:', error);
+    }
+  }
+  //klic funkcije za json import file
+  fortuneGlobalData() {
+    this.importJsonToLocalStorage('./assets/json-data/fortuneGlobal500-2024.json');
+    this.isData=true;   
+  }
+  
+
+  //Import from excel file outside app
   onFileChange(event: any): void {
     const target: DataTransfer = <DataTransfer>event.target;
     if (target.files.length !== 1) throw new Error('Only one file at a time.');
@@ -37,58 +70,10 @@ export class DataImportComponent {
             
     };
     reader.readAsArrayBuffer(target.files[0]);
+    
   }
-
-  
-  toggleSelection(index: number, row: any): void {
-    const selectedIndex = this.selectedRows.indexOf(index);
-
-    if (selectedIndex > -1) {
-      // Odstrani vrstico iz izbire
-      this.selectedRows.splice(selectedIndex, 1);
-      this.selectedData = this.selectedRows.map(i => this.data[i]);
-    } else if (this.selectedRows.length < 3) {
-      // Dodaj vrstico v izbiro
-      this.selectedRows.push(index);
-      this.selectedData.push(row);
-    }
-
-    // Dinamično pridobi naslove stolpcev
-    const columnHeaders = this.columns; // Pridobivanje naslovov stolpcev iz this.columns
-    const dataWithHeaders = [columnHeaders, ...this.selectedData];
-    localStorage.setItem('selectedData', JSON.stringify(dataWithHeaders));
-}
-  
-  
-  
-  
-  
-  
-  
-  
-  /*
-  toggleSelection(index: number, row: any): void {
-    const selectedIndex = this.selectedRows.indexOf(index);
-
-    if (selectedIndex > -1) {
-      // Odstrani vrstico iz izbire
-      this.selectedRows.splice(selectedIndex, 1);
-      this.selectedData = this.selectedRows.map(i => this.data[i]);
-    } else if (this.selectedRows.length < 3) {
-      // Dodaj vrstico v izbiro
-      this.selectedRows.push(index);
-      this.selectedData.push(row);
-    }
-
-    // Posodobi localStorage
-    localStorage.setItem('selectedData', JSON.stringify(this.selectedData));
-  }
-*/
-  proceedToAnalysis(): void {
-    if (this.selectedRows.length === 3) {
-      this.router.navigate(['/choose-method']);
-    } else {
-      alert('Izberite točno 3 podjetja pred nadaljevanjem!');
-    }
-  }
+ 
+   proceedToSelectData() {
+    this.router.navigate(['/select-data']);
+   }
 }

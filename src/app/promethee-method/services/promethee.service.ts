@@ -59,7 +59,7 @@ export class PrometheeService {
   }
 
   // Main method to execute the Promethee II algorithm
-  runPromethee(weights: number[], criteriaTypes: string[]): { rankedAlternatives: { alternative: string, score: number, positiveFlow: number, negativeFlow: number }[] } {
+  runPromethee(weights: number[], criteriaTypes: string[]): { rankedAlternatives: { alternative: string, score: number, positiveFlow: number, negativeFlow: number, netFlow: number }[] } {
     const data = this.getSelectedData();
     if (!data || data.length < 2) {
       throw new Error('Invalid or insufficient data');
@@ -73,7 +73,8 @@ export class PrometheeService {
       alternative,
       score: flows.net[index],
       positiveFlow: flows.positive[index],
-      negativeFlow: flows.negative[index]
+      negativeFlow: flows.negative[index],
+      netFlow: flows.net[index]
     })).sort((a, b) => b.score - a.score);
 
     // Add rank to each alternative and save to localStorage
@@ -82,9 +83,10 @@ export class PrometheeService {
       rank: (index + 1).toString(),
       rezultat: item.score,
       positiveFlow: item.positiveFlow,
-      negativeFlow: item.negativeFlow
+      negativeFlow: item.negativeFlow,
+      netFlow: item.netFlow
     }));
-    localStorage.setItem('PrometheeII', JSON.stringify(resultsWithRank));
+    localStorage.setItem('PrometheeII_Results', JSON.stringify(resultsWithRank));
 
     return { rankedAlternatives };
   }

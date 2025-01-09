@@ -78,6 +78,7 @@
             <th>Alternative</th>
             <th>+Flow</th>
             <th>-Flow</th>
+            <th>NetFlow</th>
             <th>Result</th>  
             <th>Ranking</th>          
           </tr>
@@ -86,7 +87,8 @@
           <tr class="table-row" *ngFor="let res of result; let i=index;">
             <td>{{ res.alternativa }}</td>
             <td>{{res.positiveFlow.toFixed(2)}}</td> 
-            <td>{{res.negativeFlow.toFixed(2)}}</td>  
+            <td>{{res.negativeFlow.toFixed(2)}}</td>
+            <td>{{res.netFlow.toFixed(2)}}</td>  
             <td>{{res.rezultat.toFixed(2)}}</td>        
             <td>{{ res.rank }}</td>          
           </tr>
@@ -95,7 +97,7 @@
       <div id="targetSection" class="card title border shadow-sm mt-2 mb-2 bg-color">
         <h4 class="text-center py-2" #targetSection>Visual Data Representation</h4>
         </div>
-      <div class="card border shadow-sm mt-2 mb-2 bg-light">
+      <div class="card border shadow-sm mt-2 mb-5 bg-light">
         <div id="chartContainer" style="display: flex; flex-wrap: wrap;">
           <div id="chart-container"></div>
           </div>

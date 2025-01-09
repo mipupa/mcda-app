@@ -1,6 +1,6 @@
 <!-- choose-method.component.html -->
 <div class="d-flex justify-content-center mt-5 mb-5 my-5 mx-5 px-3 py-3 card card-choose-method title border shadow-sm bg-light" *ngIf="isData === true; else noDataTemplate">
-    <h4 class="text-center">Choose MCDA method</h4>
+    <h4 class="text-center">Select MCDA method</h4>
     <div class="list-group text-center mx-5 mb-5 mt-3">
       <button class="button button-hover" *ngFor="let method of methods"
         class="list-group-item list-group-item-action"
@@ -14,11 +14,11 @@
   </div>
   <ng-template #noDataTemplate>
     <div class="card title border shadow-sm mt-5 mb-3 pt-3 pb-3 text-center bg-light">
-     <h5>No data available. Select Data Import from Navbar menu and import data first!</h5>
+     <h5>No data available. Select Data import from top menu and import data first!</h5>
     </div>
   </ng-template>
 
   <div class="text-center mt-5" *ngIf="isData === true;">
-    <button type="submit" class="analyze-button" [disabled]="!selectedMethod" (click)="proceed()">Proceed To Analysis</button>
+    <button type="submit" class="analyze-button mt-5" [disabled]="!selectedMethod" (click)="proceed()">Proceed To Analysis</button>
     </div>     
   

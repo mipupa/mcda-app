@@ -70,19 +70,20 @@ export class WsmMethodComponent implements OnInit {
     return this.weights.reduce((sum, weight) => sum + weight, 0);
   }
 
-  analyze(): void {
-    // Pripravi in razvrsti podatke za rangiranje
+  //WSM method implementation
+  calculateWSM(): void {
+    // Prepare and sort data for ranking
     this.ranking = this.selectedData.map(row => {
       const alternativa = row[0];
       const rezultat = row.slice(1).reduce((sum: number, value: number, index: number) => sum + value * this.weights[index], 0);
       return { alternativa, rezultat };
     });
 
-    // Sortiraj rezultate po točkah (padajoče)
+    // Sort results by scores (descending)
     this.ranking.sort((a, b) => b.rezultat - a.rezultat);
     localStorage.setItem('WSM_Results', JSON.stringify(this.ranking));
 
-    // Zahtevaj Angularju, da ponovno preveri DOM, preden izrišemo graf
+    // Zahteva Angularju, da ponovno preveri DOM, preden izrišemo graf
     this.cdr.detectChanges();
 
     // Počisti graf in ga prikaži
@@ -90,7 +91,6 @@ export class WsmMethodComponent implements OnInit {
     //scrolldown page
     this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
 
 
   createCharts(): void {

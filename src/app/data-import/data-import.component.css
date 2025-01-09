@@ -27,11 +27,17 @@
      width: 450px;
    }
  
-   .card {
+   .card-import {
      width: 40%;
      justify-self: center;
+     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
      
    }
+   .card-import:hover {
+    transform:translateX(-5px,5px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2)!important;
+    background-color: #e5e9f481!important;
+  }
  
    .data-select {
      width: 70%;

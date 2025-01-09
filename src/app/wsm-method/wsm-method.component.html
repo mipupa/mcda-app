@@ -54,12 +54,10 @@
         Total Weight Checksum: {{ getTotalWeight() }} / 1
       </div>
       <div>       
-        <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 1" (click)="analyze()">Process Analysis</button>
+        <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 1" (click)="calculateWSM()">Process Analysis</button>
       </div>
       
-      
-            
-     
+        
     <!-- Prikaz rezultatov -->
     <div #targetSection *ngIf="ranking.length" class="mt-5">
       <div class="card title border shadow-sm bg-color">
@@ -85,7 +83,7 @@
       <div id="targetSection" class="card title border shadow-sm mt-2 mb-2 bg-color">
         <h4 class="text-center py-2" #targetSection>Visual Data Representation</h4>
         </div>
-      <div class="card border shadow-sm mt-5 mb-5 bg-light">
+      <div class="card border shadow-sm mt-2 mb-5 bg-light">
       <div id="chartContainer" style="display: flex; flex-wrap: wrap;">
         <div id="chart-container"></div>
         </div>

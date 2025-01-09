@@ -80,6 +80,8 @@
           <th>Alternative</th>
           <th>Best Distance</th>
           <th>Worst Distance</th>
+          <th>Ideal Best (PIS)</th>
+          <th>Ideal Worst (NIS)</th>
           <th>Score</th>
           <th>Ranking</th>       
         </tr>
@@ -88,7 +90,9 @@
         <tr class="table-row" *ngFor="let res of result; let i=index;">
           <td>{{ res.alternativa }}</td>
           <td>{{ res.bestDistance.toFixed(2) }}</td>
-          <td>{{ res.worstDistance.toFixed(2) }}</td>
+          <td>{{ res.worstDistance.toFixed(2) }}</td>          
+          <td>{{ res.idealBest.toFixed(2) }}</td>
+          <td>{{ res.idealWorst.toFixed(2) }}</td>
           <td>{{ res.rezultat.toFixed(2) }}</td>
           <td>{{ res.rank }}</td>         
         </tr>
@@ -97,7 +101,7 @@
     <div id="targetSection" class="card title border shadow-sm mt-2 mb-2 bg-color">
       <h4 class="text-center py-2" #targetSection>Visual Data Representation</h4>
       </div>
-    <div class="card border shadow-sm mt-5 mb-5 bg-light">
+    <div class="card border shadow-sm mt-2 mb-5 bg-light">
       <div id="chartContainer" style="display: flex; flex-wrap: wrap;">
         <div id="chart-container"></div>
         </div>

@@ -1,0 +1,37 @@
+.select-table {
+  width: 70%;
+  border-collapse: collapse;
+}
+
+.table-row:hover {
+  background-color: beige;
+  
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.input-checkbox {
+  width: 20px;
+  margin: auto;
+  cursor: pointer;
+
+}
+
+.input-file {
+  width: 450px;
+}
+
+
+.data-select {
+  width: 70%;
+  justify-self: center;
+}
+
+.button:hover {
+  background-color: rgba(220, 220, 220, 0.708);
+}

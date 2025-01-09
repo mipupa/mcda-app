@@ -17,8 +17,8 @@ html {
   }
 
 .bg-color {
-    background: #454545;
-    color:whitesmoke;
+    background: #454545!important;
+    color: whitesmoke !important;;
 }
 
 .analyze-button {

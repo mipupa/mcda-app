@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class ChooseMethodComponent implements OnInit {
 
-  isData: boolean = false;
+  isData: boolean = false; 
   methods: string[] = ['WSM', 'AHP', 'TOPSIS', 'PROMETHEE II']; // Dodaj metode po potrebi
   selectedMethod: string | null = null;
 

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class TopsisService {
 
-  constructor() {}
+  constructor() { }
 
   // Method to fetch data from localStorage
   getSelectedData(): any[] {
@@ -90,27 +90,29 @@ export class TopsisService {
   }
 
   // Main method to execute the TOPSIS algorithm
-  runTopsis(weights: number[], criteriaTypes: string[]): { rankedAlternatives: { alternative: string, score: number, bestDistance: number, worstDistance: number }[] } {
-    
+  runTopsis(weights: number[], criteriaTypes: string[]): {
+    rankedAlternatives: { alternative: string, score: number, bestDistance: number, worstDistance: number, idealBest: number, idealWorst: number }[]
+  } {
     const data = this.getSelectedData();
     if (!data || data.length < 2) {
       throw new Error('Invalid or insufficient data');
     }
-  
+
     const alternatives = data.slice(1).map(row => row[0]);
     const normalizedMatrix = this.normalizeMatrix(data, weights);
     const weightedMatrix = this.applyWeights(normalizedMatrix, weights);
     const { idealBest, idealWorst } = this.determineIdealSolutions(weightedMatrix, criteriaTypes);
     const { bestDistances, worstDistances } = this.calculateDistances(weightedMatrix, idealBest, idealWorst);
     const scores = this.calculateScores(bestDistances, worstDistances);
-    
-    
+
 
     const rankedAlternatives = alternatives.map((alternative, index) => ({
       alternative,
       score: scores[index],
       bestDistance: bestDistances[index],
-      worstDistance: worstDistances[index]
+      worstDistance: worstDistances[index],
+      idealBest: idealBest[index],
+      idealWorst: idealWorst[index],
     })).sort((a, b) => b.score - a.score);
     localStorage.setItem('TOPSIS_RankedAlternatives', JSON.stringify(rankedAlternatives));
 
@@ -120,6 +122,8 @@ export class TopsisService {
       score: item.score,
       bestDistance: item.bestDistance,
       worstDistance: item.worstDistance,
+      idealBest: item.idealBest,
+      idealWorst: item.idealWorst,
       rank: (index + 1).toString()
     }));
     localStorage.setItem('TOPSIS_Results', JSON.stringify(resultsWithRank));

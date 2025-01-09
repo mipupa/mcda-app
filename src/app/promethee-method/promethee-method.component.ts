@@ -16,7 +16,7 @@ export class PrometheeMethodComponent implements OnInit {
   weights: number[] = [0.3, 0.5, 0.2];
   totalWeight: number = 0;
   types: string[] = [];
-  result: { alternativa: string, rank: string, rezultat: number, positiveFlow: number, negativeFlow: number }[] = [];
+  result: { alternativa: string, rank: string, rezultat: number, positiveFlow: number, negativeFlow: number, netFlow: number }[] = [];
 
   alternatives: any[] = []; // Podatki o alternativah    
 
@@ -90,7 +90,8 @@ onSliderChange(index: number, event: Event): void {
         rank: (index + 1).toString(),
         rezultat: item.score,
         positiveFlow: item.positiveFlow,
-        negativeFlow: item.negativeFlow
+        negativeFlow: item.negativeFlow,
+        netFlow: item.netFlow
       }));
     } catch (error) {
       console.error('Error during Promethee analysis:', error);

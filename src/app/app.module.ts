@@ -13,6 +13,7 @@ import { AhpMethodComponent } from './ahp-method/ahp-method.component';
 import { TopsisMethodComponent } from './topsis-method/topsis-method.component';
 import { HomeComponent } from './home/home.component';
 import { PrometheeMethodComponent } from './promethee-method/promethee-method.component';
+import { SelectDataComponent } from './select-data/select-data.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { PrometheeMethodComponent } from './promethee-method/promethee-method.co
     AhpMethodComponent,
     TopsisMethodComponent,
     HomeComponent,    
-    PrometheeMethodComponent    
+    PrometheeMethodComponent, SelectDataComponent    
     
   ],
   imports: [

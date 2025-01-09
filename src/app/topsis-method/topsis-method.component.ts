@@ -94,7 +94,9 @@ isDisabled(index: number): boolean {
         rank: (index + 1).toString(),
         rezultat: item.score,
         bestDistance: item.bestDistance, // Dodajamo bestDistance
-        worstDistance: item.worstDistance // Dodajamo worstDistance
+        worstDistance: item.worstDistance, // Dodajamo worstDistance
+        idealBest: item.idealBest,
+        idealWorst: item.idealWorst
       }));
     } catch (error) {
       console.error('Error during TOPSIS analysis:', error);
