@@ -89,15 +89,17 @@ isDisabled(index: number): boolean {
   calculateTopsis(): void {
     try {
       const { rankedAlternatives } = this.topsisService.runTopsis(this.weights, this.types);
-      this.result = rankedAlternatives.map((item, index) => ({
+      console.log('RankedAlternatives',rankedAlternatives);
+      this.result = rankedAlternatives.map((item, index) => ({                
         alternativa: item.alternative,
         rank: (index + 1).toString(),
         rezultat: item.score,
-        bestDistance: item.bestDistance, // Dodajamo bestDistance
-        worstDistance: item.worstDistance, // Dodajamo worstDistance
+        bestDistance: item.bestDistance,
+        worstDistance: item.worstDistance,
         idealBest: item.idealBest,
         idealWorst: item.idealWorst
-      }));
+    }));
+      console.log('Topsis result variable:',this.result);
     } catch (error) {
       console.error('Error during TOPSIS analysis:', error);
     }

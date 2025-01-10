@@ -20,15 +20,8 @@ export class TopsisService {
 
     // Calculate normalization denominator for each criterion
     const denominators = Array(numCriteria).fill(0);
-    for (let i = 1; i < data.length; i++) {
-      for (let j = 1; j <= numCriteria; j++) {
-        denominators[j - 1] += Math.pow(data[i][j], 2);
-      }
-    }
-
-    // Take the square root of each denominator
-    for (let k = 0; k < denominators.length; k++) {
-      denominators[k] = Math.sqrt(denominators[k]);
+    for (let j = 1; j <= numCriteria; j++) {
+      denominators[j - 1] = Math.sqrt(data.slice(1).reduce((sum, row) => sum + Math.pow(row[j], 2), 0));
     }
 
     // Normalize each value
@@ -40,12 +33,15 @@ export class TopsisService {
       normalizedMatrix.push(row);
     }
 
+    console.log('Normalized Matrix:', normalizedMatrix);
     return normalizedMatrix;
   }
 
   // Calculate weighted normalized matrix
   applyWeights(normalizedMatrix: number[][], weights: number[]): number[][] {
-    return normalizedMatrix.map(row => row.map((value, index) => value * weights[index]));
+    const weightedMatrix = normalizedMatrix.map(row => row.map((value, index) => value * weights[index]));
+    console.log('Weighted Matrix:', weightedMatrix);
+    return weightedMatrix;
   }
 
   // Determine ideal best and worst solutions
@@ -65,6 +61,8 @@ export class TopsisService {
       }
     }
 
+    console.log('Ideal Best:', idealBest);
+    console.log('Ideal Worst:', idealWorst);
     return { idealBest, idealWorst };
   }
 
@@ -78,6 +76,8 @@ export class TopsisService {
       return Math.sqrt(row.reduce((sum, value, index) => sum + Math.pow(value - idealWorst[index], 2), 0));
     });
 
+    console.log('Best Distances:', bestDistances);
+    console.log('Worst Distances:', worstDistances);
     return { bestDistances, worstDistances };
   }
 
@@ -85,13 +85,13 @@ export class TopsisService {
   calculateScores(bestDistances: number[], worstDistances: number[]): number[] {
     return bestDistances.map((dBest, index) => {
       const dWorst = worstDistances[index];
-      return dWorst / (dBest + dWorst);
+      return dBest + dWorst === 0 ? 0 : dWorst / (dBest + dWorst);
     });
   }
 
   // Main method to execute the TOPSIS algorithm
   runTopsis(weights: number[], criteriaTypes: string[]): {
-    rankedAlternatives: { alternative: string, score: number, bestDistance: number, worstDistance: number, idealBest: number, idealWorst: number }[]
+    rankedAlternatives: { alternative: string, score: number, bestDistance: number, worstDistance: number, idealBest: number[], idealWorst: number[] }[]
   } {
     const data = this.getSelectedData();
     if (!data || data.length < 2) {
@@ -109,19 +109,13 @@ export class TopsisService {
       score: scores[index],
       bestDistance: bestDistances[index],
       worstDistance: worstDistances[index],
-      idealBest: idealBest[index],
-      idealWorst: idealWorst[index],
+      idealBest,
+      idealWorst
     })).sort((a, b) => b.score - a.score);
-    //localStorage.setItem('TOPSIS_RankedAlternatives', JSON.stringify(rankedAlternatives));
 
-    // Add rank to each alternative and save to localStorage
+    // Save results to localStorage
     const resultsWithRank = rankedAlternatives.map((item, index) => ({
-      alternative: item.alternative,
-      score: item.score,
-      bestDistance: item.bestDistance,
-      worstDistance: item.worstDistance,
-      idealBest: item.idealBest,
-      idealWorst: item.idealWorst,
+      ...item,
       rank: (index + 1).toString()
     }));
     localStorage.setItem('TOPSIS_Results', JSON.stringify(resultsWithRank));
@@ -129,3 +123,5 @@ export class TopsisService {
     return { rankedAlternatives };
   }
 }
+
+

@@ -2,95 +2,112 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 @media screen and (min-width:992px) {
-   .navbar-collapse{
-    flex: grow 0; 
-   }
-    
+  .navbar-collapse {
+    flex: grow 0;
+  }
+
 }
 
 body {
-    background-color:rgb(255, 255, 255)
+  background-color: rgb(255, 255, 255)
 }
 
 html {
-    scroll-behavior: smooth;
-  }
+  scroll-behavior: smooth;
+}
 
 .bg-color {
-    background: #454545!important;
-    color: whitesmoke !important;;
+  background: #454545 !important;
+  color: whitesmoke !important;
+  ;
 }
 
 .analyze-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 10px;
-    background-color: beige;
-    color: #454545;
-    border: 1px solid;
-    border-radius: 8px;
-    cursor: pointer;
+  display: block;
+  margin: 10px auto;
+  padding: 10px 10px;
+  background-color: beige;
+  color: #454545;
+  border: 1px solid;
+  border-radius: 8px;
+  cursor: pointer;
 }
-  
+
 .analyze-button:hover {
-    background-color: rgb(220, 220, 184);
+  background-color: rgb(220, 220, 184);
 }
 
 .title {
-    display:flex;
-    align-self: center;  
-} 
+  display: flex;
+  align-self: center;
+}
 
 
 /* Nastavi osnovne lastnosti za telo in html */
-html, body {
-    height: 100%;
-    margin: 0;
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
 
 /* Ovijalni element za celotno vsebino */
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Glavni del strani naj zavzame preostali prostor */
 main {
-    flex: 1;
+  flex: 1;
 }
 
 /* Splošna prilagoditev za vse toasterje */
 .toast {
-    background-color: #282c34; /* Nastavi barvo ozadja */
-    color: #ffffff; /* Nastavi barvo teksta */
-  }
-  
-  /* Prilagoditev za uspeh */
-  .toast-success {
-    background-color: #cb6b45; /* Zeleno ozadje */
-    color: #ffffff;
-  }
-  
-  /* Prilagoditev za napake */
-  .toast-error {
-    background-color: #f44336; /* Rdeče ozadje */
-    color: #ffffff;
-  }
-  
-  /* Prilagoditev za opozorila */
-  .toast-warning {
-    background-color: #ff9800; /* Oranžno ozadje */
-    color: #000000;
-  }
-  
-  /* Prilagoditev za informacijo */
-  .toast-info {
-    background-color: #2196f3; /* Modro ozadje */
-    color: #ffffff;
-  }
+  background-color: #282c34;
+  /* Nastavi barvo ozadja */
+  color: #ffffff;
+  /* Nastavi barvo teksta */
+}
+
+/* Prilagoditev za uspeh */
+.toast-success {
+  background-color: #cb6b45;
+  /* Zeleno ozadje */
+  color: #ffffff;
+}
+
+/* Prilagoditev za napake */
+.toast-error {
+  background-color: #f44336;
+  /* Rdeče ozadje */
+  color: #ffffff;
+}
+
+/* Prilagoditev za informacijo */
+.toast-info {
+  background-color: #2196f3;
+  /* Modro ozadje */
+  color: #ffffff;
+}
 
 .toast-progress {
-    background-color: #ffffff; /* Zelen progress bar */
-  }
+  background-color: #ffffff;
+  /* Zelen progress bar */
+}
 
+/* Prilagoditev za opozorila */
+.toast-warning {
+  top: 50%;
+  left: 50%;
+   
+}
+
+.toast-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  margin: 0;
+  z-index: 1050;
+}

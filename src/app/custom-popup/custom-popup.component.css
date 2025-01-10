@@ -1,0 +1,48 @@
+/* Zatemnjeno ozadje popupa z animacijo */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0); /* Začetno stanje: brez zatemnitve */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  opacity: 0; /* Skrito začetno stanje */
+  visibility: hidden; /* Skrij element, dokler ni viden */
+  transition: opacity 0.6s ease, background-color 0.6s ease; /* Prehodi */
+}
+
+/* Ko je popup viden, doda zatemnitev in vidnost */
+.popup-overlay.show {
+  background-color: rgba(0, 0, 0, 0.6); /* Ciljno stanje: zatemnitev */
+  opacity: 1; /* Prikazano stanje */
+  visibility: visible; /* Prikaži element */
+}
+
+/* Popup vsebina z animacijo */
+.popup-container {
+  background: #ebe9e9;
+  padding: 20px;
+  border-radius: 8px;
+  width: auto;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1051;
+  position: relative;
+  transform: scale(0.8); /* Začetno stanje: manjša velikost */
+  opacity: 0; /* Skrito začetno stanje */
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Prehodi */
+}
+
+/* Ko je popup viden, dodajte animacijo povečanja */
+.popup-overlay.show .popup-container {
+  transform: scale(1.1); /* Ciljno stanje: normalna velikost */
+  opacity: 1; /* Prikazano stanje */
+}
+
+p {
+  font-size: 1.2em;
+}

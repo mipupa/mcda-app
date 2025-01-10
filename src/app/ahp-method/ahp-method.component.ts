@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AhpService } from './services/ahp.service';
+import { Router } from '@angular/router';
 import * as d3 from 'd3';
+import { PopupService } from '../services/popup.service';
 
 @Component({
   selector: 'app-ahp-method',
@@ -54,25 +56,38 @@ export class AhpMethodComponent implements OnInit {
     private ahpServiceMatrix1: AhpService,
     private ahpServiceMatrix2: AhpService,
     private ahpServiceMatrix3: AhpService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private popup: PopupService
   ) { }
 
   ngOnInit(): void {
+    
     const storedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
     const selectedData = localStorage.getItem('selectedData');
+  
     if (selectedData) {
       this.selectedData = JSON.parse(selectedData);
-      //pridobi alternative
-      this.alternatives = storedData.slice(1);
-      console.log(this.alternatives);
-      // Glave stolpcev pridobimo iz prve vrstice
-      this.criteria = this.selectedData[0];
-      // Odstranimo glave stolpcev iz podatkov
-      this.selectedData = this.selectedData.slice(1);
+      // Preveri, če je dolžina matrike 3x3
+      if (this.selectedData.length === 4 && this.selectedData.every((row: any) => row.length === 4)) {
+        // Pridobi alternative
+        this.alternatives = storedData.slice(1);
+        console.log(this.alternatives);
+        // Glave stolpcev pridobimo iz prve vrstice
+        this.criteria = this.selectedData[0];
+        // Odstranimo glave stolpcev iz podatkov
+        this.selectedData = this.selectedData.slice(1);
+      } else{
+        
+        console.log('AHP method is currently implemented only for 3x3 matrices.');
+        this.popup.showPopup('Application info', 
+          'AHP method is currently implemented only for 3x3 matrices. Please, select 3 alternatives!');
+        this.router.navigate(['/choose-method']); 
+      }
     } else {
       alert('Ni izbranih podatkov v localStorage!');
     }
-
+  
     this.initializeMatrix0();
     this.initializeMatrix1();
     this.initializeMatrix2();

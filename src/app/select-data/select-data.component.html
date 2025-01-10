@@ -14,7 +14,7 @@
             class="form-check-input input-checkbox" 
             type="checkbox" 
             [checked]="selectedRows.includes(i)"
-            [disabled]="!selectedRows.includes(i) && selectedRows.length >= 3"
+            [disabled]="!selectedRows.includes(i) && selectedRows.length >= 20"
             (change)="toggleSelection(i, row)" />
           </div>
           </td>
@@ -32,5 +32,5 @@
 </ng-template>
 
   <div class="text-center mt-5" *ngIf="isData === true;">
-  <button type="submit" class="analyze-button" [disabled]="selectedRows.length !== 3" (click)="proceedToAnalysis()">Proceed To Select Method</button>
+  <button type="submit" class="analyze-button" [disabled]="!selectedRows.length" (click)="proceedToAnalysis()">Proceed To Select Method</button>
   </div>

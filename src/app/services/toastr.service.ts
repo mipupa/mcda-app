@@ -13,7 +13,13 @@ export class ToastrService {
   }
 
   showError(message: string, title: string = 'Error'): void {
-    this.toastr.error(message, title);
+    this.toastr.error(message, title, {
+      positionClass: 'toast-center-center', // Toaster na sredini
+      closeButton: true,             // Omogoči gumb za zapiranje
+      timeOut: 0,                    // Onemogoči samodejno zapiranje
+      extendedTimeOut: 0,            // Onemogoči podaljšano zapiranje
+      tapToDismiss: false            // Onemogoči zapiranje na klik
+    });
   }
 
   showInfo(message: string, title: string = 'Info'): void {
@@ -21,6 +27,13 @@ export class ToastrService {
   }
 
   showWarning(message: string, title: string = 'Warning'): void {
-    this.toastr.warning(message, title);
+    this.toastr.error(message, title, {
+      positionClass: 'toast-center-center', // Toaster na sredini
+      closeButton: true,             // Omogoči gumb za zapiranje
+      timeOut: 0,                    // Onemogoči samodejno zapiranje
+      extendedTimeOut: 0,            // Onemogoči podaljšano zapiranje
+      tapToDismiss: false            // Onemogoči zapiranje na klik
+      
+    });
   }
 }

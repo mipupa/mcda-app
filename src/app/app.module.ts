@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +16,8 @@ import { HomeComponent } from './home/home.component';
 import { PrometheeMethodComponent } from './promethee-method/promethee-method.component';
 import { SelectDataComponent } from './select-data/select-data.component';
 import { ToastrModule } from 'ngx-toastr';
+import { CustomPopupComponent } from './custom-popup/custom-popup.component';
+
 
 @NgModule({
   declarations: [
@@ -27,16 +30,18 @@ import { ToastrModule } from 'ngx-toastr';
     AhpMethodComponent,
     TopsisMethodComponent,
     HomeComponent,    
-    PrometheeMethodComponent, SelectDataComponent    
+    PrometheeMethodComponent, 
+    SelectDataComponent, 
+    CustomPopupComponent    
     
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule,    
     ToastrModule.forRoot({ // Globalna konfiguracija Toastr
       timeOut: 3000, // Trajanje obvestila
-      positionClass: 'toast-top-right',
       preventDuplicates: true,
       progressBar: true, // Omogoči progress bar
       progressAnimation: 'increasing', // Animacija ('increasing' ali 'decreasing')

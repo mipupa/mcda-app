@@ -45,7 +45,7 @@ export class SelectDataComponent implements OnInit{
       // Odstrani vrstico iz izbire
       this.selectedRows.splice(selectedIndex, 1);
       this.selectedData = this.selectedRows.map(i => this.data[i]);
-    } else if (this.selectedRows.length < 3) {
+    } else if (this.selectedRows.length < 20) {
       // Dodaj vrstico v izbiro
       this.selectedRows.push(index);
       this.selectedData.push(row);
@@ -59,7 +59,7 @@ export class SelectDataComponent implements OnInit{
   
  
   proceedToAnalysis(): void {
-    if (this.selectedRows.length === 3) {
+    if (this.selectedRows.length > 0) {
       this.router.navigate(['/choose-method']);
     } else {
       alert('Izberite točno 3 podjetja pred nadaljevanjem!');
