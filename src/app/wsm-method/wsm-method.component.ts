@@ -14,7 +14,7 @@ export class WsmMethodComponent implements OnInit {
 
   selectedData: any[] = [];
   criteria: string[] = [];
-  weights: number[] = [0.3, 0.5, 0.2];
+  weights: number[] = [];
   totalWeight: number = 0;
   ranking: { alternativa: string; rezultat: number }[] = [];
 
@@ -26,48 +26,41 @@ export class WsmMethodComponent implements OnInit {
       this.criteria = this.selectedData[0];
       // Odstranimo glave stolpcev iz podatkov
       this.selectedData = this.selectedData.slice(1);
+      this.weights = this.criteria.slice(1).map(() => 0); // Vse uteži so 0
 
     } else {
       alert('No data in localStorage!');
     }
   }
 
-  updateWeights(index: number, value: number): void {
-    const remainingWeight = 1 - value; // Preostanek teže za razporeditev
-    let otherWeightsSum = 0;
-
-    // Prilagodimo ostale uteži
-    for (let i = 0; i < this.weights.length; i++) {
-      if (i !== index) {
-        if (value === 1) {
-          // Če je ena utež nastavljena na 1, druge postavimo na 0
-          this.weights[i] = 0;
-        } else {
-          // Prilagodimo ostale uteži sorazmerno
-          otherWeightsSum += this.weights[i];
-        }
-      }
+   // Funkcija za spremembo drsnika
+   onSliderChange(index: number): void {
+    const newValue = this.weights[index];
+    const totalOtherWeights = this.weights
+      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0);
+  
+    const maxAllowed = 1 - newValue;
+  
+    if (totalOtherWeights > maxAllowed) {
+      const otherIndexes = this.weights.map((_, i) => i).filter(i => i !== index);
+  
+      // Prilagoditev ostalih uteži
+      const totalCurrentWeights = otherIndexes.reduce((sum, i) => sum + this.weights[i], 0);
+      otherIndexes.forEach(i => {
+        this.weights[i] = parseFloat(((this.weights[i] / totalCurrentWeights) * maxAllowed).toFixed(1));
+      });
     }
-
-    if (value !== 1) {
-      for (let i = 0; i < this.weights.length; i++) {
-        if (i !== index && otherWeightsSum > 0) {
-          this.weights[i] = (this.weights[i] / otherWeightsSum) * remainingWeight;
-        }
-      }
-    }
-
-    this.totalWeight = this.weights.reduce((sum, w) => sum + w, 0);
   }
 
-  isDisabled(index: number): boolean {
-    // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
-    return this.weights.some(w => w === 1) && this.weights[index] !== 1;
-  }
+isDisabled(index: number): boolean {
+  // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
+  return this.weights.some(w => w === 1) && this.weights[index] !== 1;
+}
 
   // Funkcija za izračun trenutne skupne uteži
   getTotalWeight(): number {
-    return this.weights.reduce((sum, weight) => sum + weight, 0);
+    const total = this.weights.reduce((sum, weight) => sum + weight, 0);
+    return parseFloat(total.toFixed(1)); // Pretvori nazaj v število
   }
 
   //WSM method implementation
@@ -92,7 +85,7 @@ export class WsmMethodComponent implements OnInit {
     this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-
+  //Create charts
   createCharts(): void {
     const storedResults = localStorage.getItem('selectedData');
     if (!storedResults) {

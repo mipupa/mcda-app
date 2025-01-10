@@ -1,50 +1,54 @@
 .table-row:hover {
 
-  background-color:beige;
- }
- 
- .table {
-     width: 100%;
-     border-collapse: collapse;
-     
-   }
-   
-   th,
-   td {
-     border: 1px solid #ddd;
-     padding: 8px;
-     text-align: center;
-   }
-   
-   .input-checkbox {
-     width: 20px;
-     margin:auto;
-     cursor: pointer;
- 
-   }
- 
- .input-file {
-     width: 450px;
-   }
- 
-   .card-import {
-     width: 40%;
-     justify-self: center;
-     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-     
-   }
-   .card-import:hover {
-    transform:translateX(-5px,5px);
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2)!important;
-    background-color: #e5e9f481!important;
-  }
- 
-   .data-select {
-     width: 70%;
-     justify-self: center;
-   }
- 
-   .button:hover {
-     background-color: rgba(220, 220, 220, 0.708);
-   }
- 
+  background-color: beige;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.input-checkbox {
+  width: 20px;
+  margin: auto;
+  cursor: pointer;
+
+}
+
+.input-file {
+  width: 450px;
+}
+
+.card-import {
+  width: 40%;
+  justify-self: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.card-import:hover {
+  transform: translateX(-5px, 5px);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2) !important;
+  background-color: #e5e9f481 !important;
+}
+
+.data-select {
+  width: 70%;
+  justify-self: center;
+}
+
+.button:hover {
+  background-color: rgba(220, 220, 220, 0.708);
+}
+
+.card {
+  border-radius: 0%;
+  
+}

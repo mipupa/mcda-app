@@ -13,24 +13,23 @@ export class TopsisMethodComponent implements OnInit {
 
   selectedData: any[] = [];
   criteria: string[] = [];
-  weights: number[] = [0.2,0.5,0.3];
-  types: ('beneficial' | 'non-beneficial')[] = ['beneficial', 'non-beneficial', 'beneficial']; // Tipi kriterijev
+  weights: number[] = [];
+  types: ('benefit' | 'non-beneficial')[] = []; // Tipi kriterijev
   result: any[]=[]; // Rezultati TOPSIS
-   
+  errorMessage: string | null = null; 
   alternatives: any[] = []; // Podatki o alternativah  
-
 
   constructor(private cdr: ChangeDetectorRef, private topsisService: TopsisService) { }
 
   ngOnInit(): void {
 
-    // Pridobivanje podatkov iz localStorage in inicializacija
+     // Fetch selected data and criteria from local storage or initial setup
     const data = localStorage.getItem('selectedData');
     if (data) {
       this.selectedData = JSON.parse(data);
       this.criteria = this.selectedData[0];
       //this.weights = Array(this.criteria.length - 1).fill(1 / (this.criteria.length - 1)); // Privzete uteži
-      this.types = Array(this.criteria.length - 1).fill('beneficial'); // Privzeta vrsta kriterijev
+      this.types = Array(this.criteria.length - 1).fill('benefit'); // Privzeta vrsta kriterijev
 
       const storedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
       const selectedData = localStorage.getItem('selectedData');
@@ -40,6 +39,7 @@ export class TopsisMethodComponent implements OnInit {
         this.criteria = this.selectedData[0];
         // Odstranimo glave stolpcev iz podatkov
         this.selectedData = this.selectedData.slice(1);
+        this.weights = this.criteria.slice(1).map(() => 0); // Vse uteži so 0
       } else {
         alert('Ni izbranih podatkov v localStorage!');
       }
@@ -49,61 +49,74 @@ export class TopsisMethodComponent implements OnInit {
     }
   }
 
-
   // Funkcija za spremembo drsnika
-onSliderChange(index: number, event: Event): void {
-  const newValue = parseFloat((+(event.target as HTMLInputElement).value).toFixed(1));
-  const totalOtherWeights = parseFloat(
-    this.weights
-      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0)
-      .toFixed(1)
-  );
-  const maxAllowed = parseFloat((1 - newValue).toFixed(1));
-  this.weights[index] = newValue;
-
-  if (totalOtherWeights > maxAllowed) {
-    // Prilagodi ostale drsnike sorazmerno
-    const otherIndexes = this.weights
-      .map((_, i) => i)
-      .filter(i => i !== index);
-    const [first, second] = otherIndexes;
-    const ratio = this.weights[first] / (this.weights[first] + this.weights[second]);
-    
-    this.weights[first] = parseFloat((ratio * maxAllowed).toFixed(1));
-    this.weights[second] = parseFloat((maxAllowed - this.weights[first]).toFixed(1));
-  }
-}
-
-isDisabled(index: number): boolean {
-  // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
-  return this.weights.some(w => w === 1) && this.weights[index] !== 1;
-}
-
-  // Funkcija za izračun trenutne skupne uteži
-  getTotalWeight(): number {
-    const total = this.weights.reduce((sum, weight) => sum + weight, 0);
-    return parseFloat(total.toFixed(1)); // Pretvori nazaj v število
-  }
-
-  //Topsis funkcija 
-  calculateTopsis(): void {
-    try {
-      const { rankedAlternatives } = this.topsisService.runTopsis(this.weights, this.types);
-      console.log('RankedAlternatives',rankedAlternatives);
-      this.result = rankedAlternatives.map((item, index) => ({                
-        alternativa: item.alternative,
-        rank: (index + 1).toString(),
-        rezultat: item.score,
-        bestDistance: item.bestDistance,
-        worstDistance: item.worstDistance,
-        idealBest: item.idealBest,
-        idealWorst: item.idealWorst
-    }));
-      console.log('Topsis result variable:',this.result);
-    } catch (error) {
-      console.error('Error during TOPSIS analysis:', error);
+  onSliderChange(index: number): void {
+    const newValue = this.weights[index];
+    const totalOtherWeights = this.weights
+      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0);
+  
+    const maxAllowed = 1 - newValue;
+  
+    if (totalOtherWeights > maxAllowed) {
+      const otherIndexes = this.weights.map((_, i) => i).filter(i => i !== index);
+  
+      // Prilagoditev ostalih uteži
+      const totalCurrentWeights = otherIndexes.reduce((sum, i) => sum + this.weights[i], 0);
+      otherIndexes.forEach(i => {
+        this.weights[i] = parseFloat(((this.weights[i] / totalCurrentWeights) * maxAllowed).toFixed(1));
+      });
     }
-   
+  }
+
+  isDisabled(index: number): boolean {
+    // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež
+    return this.weights.some(w => w === 1) && this.weights[index] !== 1;
+  }
+  
+    // Funkcija za izračun trenutne skupne uteži
+    getTotalWeight(): number {
+      const total = this.weights.reduce((sum, weight) => sum + weight, 0);
+      return parseFloat(total.toFixed(1)); // Pretvori nazaj v število
+    }
+
+  //Perform TOPSIS analysis
+  calculateTopsis(): void {
+    if (this.getTotalWeight() !== 1) {
+      this.errorMessage = 'Total weight must equal 1.';
+      return;
+    }
+
+    try {
+      const weights = this.weights;
+      const criteriaTypes = this.types;
+      const normMethod: 'v' | 'l' = 'v'; // Default to vector normalization
+
+      // Run TOPSIS
+    const results = this.topsisService.runTopsis(weights, criteriaTypes, normMethod);
+
+    // Process results for display
+    this.result = results.alternatives
+      .map((alt) => ({
+        alternativa: alt.alternative,
+        bestDistance: alt.idealDistance,
+        worstDistance: alt.antiIdealDistance,
+        idealBest: alt.closenessCoefficient, // Ideal best is PIS
+        idealWorst: 1 - alt.closenessCoefficient, // Ideal worst is NIS
+        rezultat: alt.closenessCoefficient,
+      }))
+      .sort((a, b) => b.rezultat - a.rezultat) // Sort by closenessCoefficient descending
+      .map((res, index) => ({
+        ...res,
+        rank: index + 1, // Assign rank based on sorted order
+      }));
+
+    this.errorMessage = null; // Clear error message
+  } catch (error) {
+    this.errorMessage = (error as Error).message;
+    console.error('Error in TOPSIS calculation:', this.errorMessage);
+  }
+
+     
     // Zahtevaj,da Angular, ponovno preveri DOM, preden izrišemo graf
     this.cdr.detectChanges();
 
@@ -113,8 +126,6 @@ isDisabled(index: number): boolean {
     //scrolldown page
     this.targetSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  //implementacija metode createChart
 
   //createCharts Method
  createCharts(): void {

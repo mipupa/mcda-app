@@ -13,7 +13,7 @@ export class PrometheeMethodComponent implements OnInit {
 
   selectedData: any[] = [];
   criteria: string[] = [];
-  weights: number[] = [0.3, 0.5, 0.2];
+  weights: number[] = [];
   totalWeight: number = 0;
   types: string[] = [];  
   result: { alternativa: string, rank: string, rezultat: number, positiveFlow: number, negativeFlow: number, netFlow: number }[] = [];
@@ -38,6 +38,7 @@ export class PrometheeMethodComponent implements OnInit {
         this.criteria = this.selectedData[0];
         // Odstranimo glave stolpcev iz podatkov
         this.selectedData = this.selectedData.slice(1);
+        this.weights = this.criteria.slice(1).map(() => 0); // Vse uteži so 0
       } else {
         alert('Ni izbranih podatkov v localStorage!');
       }
@@ -48,28 +49,23 @@ export class PrometheeMethodComponent implements OnInit {
   }
 
   // Funkcija za spremembo drsnika
-onSliderChange(index: number, event: Event): void {
-  const newValue = parseFloat((+(event.target as HTMLInputElement).value).toFixed(1));
-  const totalOtherWeights = parseFloat(
-    this.weights
-      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0)
-      .toFixed(1)
-  );
-  const maxAllowed = parseFloat((1 - newValue).toFixed(1));
-  this.weights[index] = newValue;
-
-  if (totalOtherWeights > maxAllowed) {
-    // Prilagodi ostale drsnike sorazmerno
-    const otherIndexes = this.weights
-      .map((_, i) => i)
-      .filter(i => i !== index);
-    const [first, second] = otherIndexes;
-    const ratio = this.weights[first] / (this.weights[first] + this.weights[second]);
-    
-    this.weights[first] = parseFloat((ratio * maxAllowed).toFixed(1));
-    this.weights[second] = parseFloat((maxAllowed - this.weights[first]).toFixed(1));
+  onSliderChange(index: number): void {
+    const newValue = this.weights[index];
+    const totalOtherWeights = this.weights
+      .reduce((sum, weight, i) => (i !== index ? sum + weight : sum), 0);
+  
+    const maxAllowed = 1 - newValue;
+  
+    if (totalOtherWeights > maxAllowed) {
+      const otherIndexes = this.weights.map((_, i) => i).filter(i => i !== index);
+  
+      // Prilagoditev ostalih uteži
+      const totalCurrentWeights = otherIndexes.reduce((sum, i) => sum + this.weights[i], 0);
+      otherIndexes.forEach(i => {
+        this.weights[i] = parseFloat(((this.weights[i] / totalCurrentWeights) * maxAllowed).toFixed(1));
+      });
+    }
   }
-}
 
   isDisabled(index: number): boolean {
     // Preveri, ali je ena utež 1 in trenutni indeks ni ta utež

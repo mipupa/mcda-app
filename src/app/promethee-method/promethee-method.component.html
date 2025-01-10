@@ -36,14 +36,15 @@
             <td>{{ criterion }}</td>
             <td>
               <input
-                type="range"
-                [value]="weights[i].toFixed(1)"
-                (input)="onSliderChange(i, $event)"
-                class="input-slider"
-                min="0"
-                max="1"
-                step="0.1"
-              />
+                    type="range"
+                    [(ngModel)]="weights[i]"
+                    class="input-slider"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    (ngModelChange)="onSliderChange(i)"
+                    [ngModelOptions]="{ standalone: true }"
+                  >             
             </td>
             <td>{{ weights[i] }}</td>
             <td>
