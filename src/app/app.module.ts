@@ -17,6 +17,8 @@ import { PrometheeMethodComponent } from './promethee-method/promethee-method.co
 import { SelectDataComponent } from './select-data/select-data.component';
 import { ToastrModule } from 'ngx-toastr';
 import { CustomPopupComponent } from './custom-popup/custom-popup.component';
+import { UserGuideVideosComponent } from './user-guide-videos/user-guide-videos.component';
+import { ReportsComponent } from './reports/reports.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { CustomPopupComponent } from './custom-popup/custom-popup.component';
     HomeComponent,    
     PrometheeMethodComponent, 
     SelectDataComponent, 
-    CustomPopupComponent    
+    CustomPopupComponent, 
+    UserGuideVideosComponent, 
+    ReportsComponent    
     
   ],
   imports: [

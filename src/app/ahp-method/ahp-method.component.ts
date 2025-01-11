@@ -81,11 +81,11 @@ export class AhpMethodComponent implements OnInit {
         
         console.log('AHP method is currently implemented only for 3x3 matrices.');
         this.popup.showPopup('Application info', 
-          'AHP method is currently implemented only for 3x3 matrices. Please, select 3 alternatives!');
+          'AHP method is currently implemented only for 3x3 matrices. Please, select 3 alternatives and 3 criteria.');
         this.router.navigate(['/choose-method']); 
       }
     } else {
-      alert('Ni izbranih podatkov v localStorage!');
+      alert('No selected data in local storage!');
     }
   
     this.initializeMatrix0();
@@ -356,7 +356,7 @@ export class AhpMethodComponent implements OnInit {
         const ahpResult = ahpResults[`c${index + 1}`] || 0; // Use c1, c2, c3...
         return {
           values: row,
-          ahpResult: ahpResult
+          ahpResult: ahpResult 
         };
       });
     } else {

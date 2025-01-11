@@ -24,7 +24,7 @@
 
 /* Popup vsebina z animacijo */
 .popup-container {
-  background: #ebe9e9;
+  background: #f7f6f6;
   padding: 20px;
   border-radius: 8px;
   width: auto;
@@ -44,5 +44,6 @@
 }
 
 p {
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
+

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TopsisService {
-
-  constructor() { }
+  constructor() {}
 
   // Method to fetch data from localStorage
   getSelectedData(): any[] {
@@ -18,17 +17,19 @@ export class TopsisService {
     if (method === 'v') {
       // Vector normalization
       const denominators = data[0].map((_, colIndex) =>
-        Math.sqrt(data.reduce((sum, row) => sum + Math.pow(row[colIndex], 2), 0))
+        Math.sqrt(
+          data.reduce((sum, row) => sum + Math.pow(row[colIndex], 2), 0)
+        )
       );
-      return data.map(row =>
+      return data.map((row) =>
         row.map((value, index) => +(value / denominators[index]).toFixed(3))
       );
     } else {
       // Linear normalization
       const maxValues = data[0].map((_, colIndex) =>
-        Math.max(...data.map(row => row[colIndex]))
+        Math.max(...data.map((row) => row[colIndex]))
       );
-      return data.map(row =>
+      return data.map((row) =>
         row.map((value, index) => +(value / maxValues[index]).toFixed(3))
       );
     }
@@ -36,7 +37,7 @@ export class TopsisService {
 
   // Apply weights to the normalized matrix
   applyWeights(matrix: number[][], weights: number[]): number[][] {
-    return matrix.map(row =>
+    return matrix.map((row) =>
       row.map((value, index) => +(value * weights[index]).toFixed(3))
     );
   }
@@ -51,7 +52,7 @@ export class TopsisService {
     const idealWorst = Array(numCriteria).fill(0);
 
     for (let j = 0; j < numCriteria; j++) {
-      const column = weightedMatrix.map(row => row[j]);
+      const column = weightedMatrix.map((row) => row[j]);
       if (criteriaTypes[j] === 'beneficial') {
         idealBest[j] = Math.max(...column);
         idealWorst[j] = Math.min(...column);
@@ -70,12 +71,22 @@ export class TopsisService {
     idealBest: number[],
     idealWorst: number[]
   ): { bestDistances: number[]; worstDistances: number[] } {
-    const bestDistances = weightedMatrix.map(row =>
-      Math.sqrt(row.reduce((sum, value, index) => sum + Math.pow(value - idealBest[index], 2), 0))
+    const bestDistances = weightedMatrix.map((row) =>
+      Math.sqrt(
+        row.reduce(
+          (sum, value, index) => sum + Math.pow(value - idealBest[index], 2),
+          0
+        )
+      )
     );
 
-    const worstDistances = weightedMatrix.map(row =>
-      Math.sqrt(row.reduce((sum, value, index) => sum + Math.pow(value - idealWorst[index], 2), 0))
+    const worstDistances = weightedMatrix.map((row) =>
+      Math.sqrt(
+        row.reduce(
+          (sum, value, index) => sum + Math.pow(value - idealWorst[index], 2),
+          0
+        )
+      )
     );
 
     return { bestDistances, worstDistances };
@@ -95,19 +106,31 @@ export class TopsisService {
     criteriaTypes: string[],
     normMethod: 'v' | 'l' = 'v'
   ): {
-    alternatives: { alternative: string; idealDistance: number; antiIdealDistance: number; closenessCoefficient: number }[];
+    alternatives: {
+      alternative: string;
+      idealDistance: number;
+      antiIdealDistance: number;
+      closenessCoefficient: number;
+    }[];
   } {
     const data = this.getSelectedData();
     if (!data || data.length < 2) {
       throw new Error('Invalid or insufficient data');
     }
 
-    const alternatives = data.slice(1).map(row => row[0]);
-    const matrix = data.slice(1).map(row => row.slice(1));
+    const alternatives = data.slice(1).map((row) => row[0]);
+    const matrix = data.slice(1).map((row) => row.slice(1));
     const normalizedMatrix = this.normalizeMatrix(matrix, normMethod);
     const weightedMatrix = this.applyWeights(normalizedMatrix, weights);
-    const { idealBest, idealWorst } = this.determineIdealSolutions(weightedMatrix, criteriaTypes);
-    const { bestDistances, worstDistances } = this.calculateDistances(weightedMatrix, idealBest, idealWorst);
+    const { idealBest, idealWorst } = this.determineIdealSolutions(
+      weightedMatrix,
+      criteriaTypes
+    );
+    const { bestDistances, worstDistances } = this.calculateDistances(
+      weightedMatrix,
+      idealBest,
+      idealWorst
+    );
     const scores = this.calculateScores(bestDistances, worstDistances);
 
     const result = alternatives.map((alternative, index) => ({
@@ -124,4 +147,3 @@ export class TopsisService {
     return { alternatives: result };
   }
 }
-
