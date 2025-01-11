@@ -16,7 +16,7 @@ export class WsmMethodComponent implements OnInit {
   criteria: string[] = [];
   weights: number[] = [];
   totalWeight: number = 0;
-  ranking: { alternativa: string; rezultat: number }[] = [];
+  ranking: { alternative: string; rezultat: number }[] = [];
 
   ngOnInit(): void {
     const storedData = localStorage.getItem('selectedData');
@@ -67,9 +67,9 @@ isDisabled(index: number): boolean {
   calculateWSM(): void {
     // Prepare and sort data for ranking
     this.ranking = this.selectedData.map(row => {
-      const alternativa = row[0];
+      const alternative = row[0];
       const rezultat = row.slice(1).reduce((sum: number, value: number, index: number) => sum + value * this.weights[index], 0);
-      return { alternativa, rezultat };
+      return { alternative, rezultat };
     });
 
     // Sort results by scores (descending)
@@ -101,7 +101,7 @@ isDisabled(index: number): boolean {
 
     headers.slice(1).forEach((header: string, metricIndex: number) => {
       const data = rows.map(row => ({
-        alternativa: row[0] as string,
+        alternative: row[0] as string,
         rezultat: +(row[metricIndex + 1] as number),
       }));
 
@@ -122,7 +122,7 @@ isDisabled(index: number): boolean {
 
       const x = d3
         .scaleBand()
-        .domain(data.map(d => d.alternativa))
+        .domain(data.map(d => d.alternative))
         .range([margin.left, width - margin.right])
         .padding(0.1);
 
@@ -160,7 +160,7 @@ isDisabled(index: number): boolean {
         .selectAll('rect')
         .data(data)
         .join('rect')
-        .attr('x', d => x(d.alternativa)!)
+        .attr('x', d => x(d.alternative)!)
         .attr('y', y(0)) // Začetna višina stolpca na osi X (dno grafa)
         .attr('height', 0) // Začetna višina stolpcev je 0
         .attr('width', x.bandwidth())
@@ -212,7 +212,7 @@ isDisabled(index: number): boolean {
         .selectAll('text')
         .data(data)
         .join('text')
-        .attr('x', d => x(d.alternativa)! + x.bandwidth() / 2) // Središče stolpca
+        .attr('x', d => x(d.alternative)! + x.bandwidth() / 2) // Središče stolpca
         .attr('y', d => y(d.rezultat) - 5) // Nekoliko nad vrhom stolpca
         .attr('text-anchor', 'middle') // Poravnava besedila na sredino stolpca
         .style('font-size', '14px') // Velikost pisave

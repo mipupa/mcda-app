@@ -78,12 +78,12 @@ export class PrometheeService {
 
     // Add rank to each alternative and save to localStorage
     const resultsWithRank = rankedAlternatives.map((item, index) => ({
-      alternativa: item.alternative,
-      rank: (index + 1).toString(), 
-      rezultat: item.score,
-      positiveFlow: item.positiveFlow,
-      negativeFlow: item.negativeFlow,
-      netFlow: item.netFlow
+      Alternative: item.alternative,
+      PositiveFlow: item.positiveFlow,
+      NegativeFlow: item.negativeFlow,
+      NetFlow: item.netFlow,
+      Result: item.score,
+      Ranking: (index + 1).toString()
     }));
     localStorage.setItem('PrometheeII_Results', JSON.stringify(resultsWithRank));
 

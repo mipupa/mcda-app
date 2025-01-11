@@ -405,19 +405,20 @@
   </div>
 
   
-    <table class="results-table border shadow-sm">
-      <thead>
-        <tr>
-          <th *ngFor="let header of tableHeaders">{{ header }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="table-row" *ngFor="let row of combinedData">
-          <td *ngFor="let cell of row.values">{{ cell }}</td>
-          <td>{{ row.ahpResult.toFixed(3) }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="results-table border shadow-sm">
+    <thead>
+      <tr>
+        <th *ngFor="let header of tableHeaders">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let row of combinedData">
+        <td *ngFor="let cell of row.values">{{ cell }}</td>
+        <td>{{ row.ahpResult.toFixed(3) }}</td>
+        <td>{{ row.rank }}</td>
+      </tr>
+    </tbody>
+  </table>
   </div>
   <div *ngIf="combinedData.length > 0"> 
     <div id="targetSection" class="card title border shadow-sm mt-2 mb-2 bg-color">

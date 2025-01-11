@@ -134,15 +134,25 @@ export class TopsisService {
     const scores = this.calculateScores(bestDistances, worstDistances);
 
     const result = alternatives.map((alternative, index) => ({
-      alternative,
-      rank: (index + 1).toString(),
+      alternative,      
       idealDistance: bestDistances[index],
       antiIdealDistance: worstDistances[index],
       closenessCoefficient: scores[index],
+      rank: (index + 1).toString()
     }));
 
     // Save results to localStorage
-    localStorage.setItem('TOPSIS_Results', JSON.stringify(result));
+    //localStorage.setItem('TOPSIS_Results', JSON.stringify(result));
+
+      // Add rank to each alternative and save to localStorage
+      const resultsWithRank = result.map((item, index) => ({
+        Alternative: item.alternative,
+        Ideal_Distance: item.idealDistance,
+        Anti_Ideal_Distance: item.antiIdealDistance,
+        Result: item.closenessCoefficient,
+        rank: (index + 1).toString()
+      }));
+      localStorage.setItem('TOPSIS_Results', JSON.stringify(resultsWithRank));
 
     return { alternatives: result };
   }

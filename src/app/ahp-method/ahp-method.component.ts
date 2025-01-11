@@ -339,26 +339,39 @@ export class AhpMethodComponent implements OnInit {
   }
 
 
-  //for displaying combined results in table
   displayCombinedResults(): void {
     const storedAHPResults = localStorage.getItem('AHP_Results');
     const storedSelectedData = localStorage.getItem('selectedData');
-
+  
     if (storedAHPResults && storedSelectedData) {
       const ahpResults = JSON.parse(storedAHPResults);
       const selectedData = JSON.parse(storedSelectedData);
-
+  
       // Extract table headers from the first row of selectedData
-      this.tableHeaders = [...selectedData[0], "AHP Result"];
-
+      this.tableHeaders = [...selectedData[0], "AHP Result", "Ranking"];
+  
       // Combine selectedData with AHP results
-      this.combinedData = selectedData.slice(1).map((row: any, index: number) => {
+      let combinedData = selectedData.slice(1).map((row: any, index: number) => {
         const ahpResult = ahpResults[`c${index + 1}`] || 0; // Use c1, c2, c3...
         return {
           values: row,
-          ahpResult: ahpResult 
+          ahpResult: ahpResult
         };
       });
+  
+      // Sort combinedData by ahpResult in descending order to calculate rank
+      combinedData.sort((a: any, b: any) => b.ahpResult - a.ahpResult);
+  
+      // Assign rank based on the sorted order
+      combinedData = combinedData.map((item: any, rank: number) => ({
+        ...item,
+        rank: rank + 1
+      }));
+  
+      // Save combinedData with rank to localStorage
+      localStorage.setItem('AHP_Results_Combined', JSON.stringify(combinedData));
+  
+      this.combinedData = combinedData;
     } else {
       console.error('AHP_Results or selectedData is missing in localStorage');
     }

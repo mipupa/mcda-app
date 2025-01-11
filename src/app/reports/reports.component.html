@@ -1,7 +1,113 @@
 <div class="container mt-2">
-    <div class="card title border shadow-sm bg-color">
-        <h4 class="text-center py-2">Analysis reports</h4>
-      </div>
+  <div class="card title border shadow-sm bg-color">
+    <h4 class="text-center py-2">Summary of analysis Report</h4>
+  </div>
 
+<!-- AHP Results Table -->
+<div class="report-section">
+  <div class="card title border shadow-sm bg-light mt-3">
+  <h4 class="mx-2 my-2">AHP Results</h4>
+  </div>
+  <table class="results-table border shadow-sm">
+    <thead>
+      <tr>
+        <th>Alternative</th>
+        <th>Value 1</th>
+        <th>Value 2</th>
+        <th>Value 3</th>
+        <th>Result</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let row of ahpResults">
+        <td>{{ row.Alternative }}</td>
+        <td>{{ row.Value1 | number:'1.3-3' }}</td>
+        <td>{{ row.Value2 | number:'1.3-3' }}</td>
+        <td>{{ row.Value3 | number:'1.3-3' }}</td>
+        <td>{{ row.Result | number:'1.3-3' }}</td>
+        <td>{{ row.Rank }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
+<!-- TOPSIS Results Table -->
+<div class="report-section">
+  <div class="card title border shadow-sm bg-light mt-3">
+  <h4 class="mx-2 my-2">TOPSIS Results</h4>
+  </div>
+  <table class="results-table border shadow-sm">
+    <thead>
+      <tr>
+        <th>Alternative</th>
+        <th>Ideal Distance</th>
+        <th>Anti-Ideal Distance</th>
+        <th>Result</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let row of topsisResults">
+        <td>{{ row.Alternative }}</td>
+        <td>{{ row.Ideal_Distance | number:'1.3-3' }}</td>
+        <td>{{ row.Anti_Ideal_Distance | number:'1.3-3' }}</td>
+        <td>{{ row.Result | number:'1.3-3' }}</td>
+        <td>{{ row.Rank }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Promethee II Results Table -->
+<div class="report-section">
+  <div class="card title border shadow-sm bg-light mt-3">
+  <h4 class="mx-2 my-2">Promethee II Results</h4>
+  </div>
+  <table class="results-table border shadow-sm">
+    <thead>
+      <tr>
+        <th>Alternative</th>
+        <th>Positive Flow</th>
+        <th>Negative Flow</th>
+        <th>Net Flow</th>
+        <th>Result</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let row of prometheeResults">
+        <td>{{ row.Alternative }}</td>
+        <td>{{ row.PositiveFlow | number:'1.3-3' }}</td>
+        <td>{{ row.NegativeFlow | number:'1.3-3' }}</td>
+        <td>{{ row.NetFlow | number:'1.3-3' }}</td>
+        <td>{{ row.Result | number:'1.3-3' }}</td>
+        <td>{{ row.Rank }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- WSM Results Table -->
+<div class="report-section">
+  <div class="card title border shadow-sm bg-light mt-3">
+  <h4 class="mx-2 my-2">WSM Results</h4>
+  </div>
+  <table class="results-table border shadow-sm">
+    <thead>
+      <tr>
+        <th>Alternative</th>
+        <th>Result</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let row of wsmResults">
+        <td>{{ row.Alternative }}</td>
+        <td>{{ row.Result | number:'1.3-3' }}</td>
+        <td>{{ row.Rank }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </div>
