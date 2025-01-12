@@ -1,22 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
+
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css'
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit, AfterViewInit {
 
   ahpResults: any[] = [];
   topsisResults: any[] = [];
   prometheeResults: any[] = [];
   wsmResults: any[] = [];
 
+  ngAfterViewInit() {
+    this.initScrollTriggerForCharts();
+  }
+
   ngOnInit(): void {
     this.loadData();
     this.drawSeparateBarCharts();
+  }
 
+  initScrollTriggerForCharts() {
+    // Poiščemo glavni element, v katerem rišemo
+    const barChartsElement = document.getElementById('bar-charts');
+    if (!barChartsElement) return;
+
+    // Ustvarimo IntersectionObserver:
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+
+      // 1) Ko element pride v vidno polje
+      if (entry.isIntersecting) {
+        observer.unobserve(barChartsElement)
+        // Najprej (po želji) počistimo, če je kaj ostalo
+        // Da se graf res nariše na novo od začetka
+
+        d3.select('#bar-charts').html('');
+
+        // Znova narišemo grafe (in se bo zgodila animacija)
+        this.drawSeparateBarCharts();
+      }
+    }, {
+      threshold: 0.6
+      // Ko je 60% elementa v viewportu, se sproži
+    });
+
+    // Povemo observer-ju, naj opazuje #bar-charts
+    observer.observe(barChartsElement);
   }
 
   loadData(): void {
@@ -83,7 +116,6 @@ export class ReportsComponent implements OnInit {
   }
 
   //method for drawing separate Bar Charts
-
   drawSeparateBarCharts(): void {
     const methods = [
       { name: 'AHP', data: this.ahpResults },
@@ -91,11 +123,11 @@ export class ReportsComponent implements OnInit {
       { name: 'PROMETHEE', data: this.prometheeResults },
       { name: 'WSM', data: this.wsmResults }
     ];
-  
+
     const width = 470;
     const height = 300;
     const margin = { top: 80, right: 35, bottom: 100, left: 80 };
-  
+
     methods.forEach((method, methodIndex) => {
       const data: BarChartData[] = method.data
         .map((item: any) => ({
@@ -103,38 +135,38 @@ export class ReportsComponent implements OnInit {
           Result: item.Result ?? 0
         }))
         .sort((a, b) => b.Result - a.Result);
-  
+
       const container = d3.select('#bar-charts')
         .append('div')
         .style('display', 'inline-block')
         .style('margin', '20px')
         .style('border', '1px solid #ccc')
         .style('padding', '10px');
-  
+
       container.append('h4')
         .text(`${method.name} Results`)
         .style('text-align', 'center')
         .style('font-size', '20px')
         .style('font-weight', 'bold');
-  
+
       const svg = container.append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
-  
+
       const minValue = d3.min(data, d => d.Result) ?? 0;
       const maxValue = d3.max(data, d => d.Result) ?? 0;
-  
+
       const x = d3.scaleBand()
         .domain(data.map(d => d.Alternative))
         .range([0, width])
         .padding(0.1);
-  
+
       const y = d3.scaleLinear()
         .domain([Math.min(0, minValue), maxValue])
         .range([height, 0]);
-  
+
       const defs = svg.append('defs');
       data.forEach((d, i) => {
         const gradientId = `gradient-${methodIndex}-${i}`;
@@ -144,24 +176,24 @@ export class ReportsComponent implements OnInit {
           .attr('y1', '0%')
           .attr('x2', '0%')
           .attr('y2', '100%');
-  
+
         if (d.Result >= 0) {
           gradient.append('stop')
             .attr('offset', '0%')
-            .attr('stop-color', '#3498db'); // Temno modra
+            .attr('stop-color', '#3498db'); // Temna barva
           gradient.append('stop')
             .attr('offset', '100%')
-            .attr('stop-color', '#add8e6'); // Svetlo modra
+            .attr('stop-color', '#add8e6'); // Svetla barva
         } else {
           gradient.append('stop')
             .attr('offset', '0%')
-            .attr('stop-color', '#e74c3c'); // Temno rdeča
+            .attr('stop-color', '#f5b7b1'); // Temno rdečargb(233, 172, 166)
           gradient.append('stop')
             .attr('offset', '100%')
-            .attr('stop-color', '#f5b7b1'); // Svetlo rdeča
+            .attr('stop-color', '#e74c3c'); // Svetlo rdeča
         }
       });
-  
+
       svg.append('g')
         .attr('transform', `translate(0,${height})`)
         .call(d3.axisBottom(x))
@@ -171,12 +203,12 @@ export class ReportsComponent implements OnInit {
         .attr('transform', 'rotate(-45)')
         .attr('dy', '1em')
         .attr('dx', '-0.5em');
-  
+
       svg.append('g')
         .call(d3.axisLeft(y))
         .selectAll('text')
         .style('font-size', '16px');
-  
+
       svg.selectAll('rect')
         .data(data)
         .join('rect')
@@ -186,34 +218,34 @@ export class ReportsComponent implements OnInit {
         .attr('height', 0)
         .attr('fill', (d, i) => `url(#gradient-${methodIndex}-${i})`)
         .transition()
-        .duration(800)
+        .duration(2000)
         .attr('y', d => d.Result >= 0 ? y(d.Result) : y(0))
         .attr('height', d => Math.abs(y(d.Result) - y(0)));
-  
+
       // Dodajanje legende
       const legend = svg.append('g')
         .attr('transform', `translate(${width - 120}, ${-margin.top + 10})`);
-  
+
       // Legenda za pozitivne stolpce
       legend.append('rect')
         .attr('width', 15)
         .attr('height', 15)
         .attr('y', 0)
         .attr('fill', '#3498db'); // Temno modra
-  
+
       legend.append('text')
         .attr('x', 20)
         .attr('y', 12)
         .style('font-size', '16px')
         .text('Positive Values');
-  
+
       // Legenda za negativne stolpce
       legend.append('rect')
         .attr('width', 15)
         .attr('height', 15)
         .attr('y', 20)
         .attr('fill', '#e74c3c'); // Temno rdeča
-  
+
       legend.append('text')
         .attr('x', 20)
         .attr('y', 32)
@@ -221,15 +253,12 @@ export class ReportsComponent implements OnInit {
         .text('Negative Values');
     });
   }
-  
-
-
 
 }
 
 
 
-
+//interfaces
 
 interface AHPResult {
   values: [string, number, number, number];

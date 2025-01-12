@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TopsisService {
-  constructor() {}
+  constructor() { }
 
   // Method to fetch data from localStorage
   getSelectedData(): any[] {
@@ -134,7 +134,7 @@ export class TopsisService {
     const scores = this.calculateScores(bestDistances, worstDistances);
 
     const result = alternatives.map((alternative, index) => ({
-      alternative,      
+      alternative,
       idealDistance: bestDistances[index],
       antiIdealDistance: worstDistances[index],
       closenessCoefficient: scores[index],
@@ -144,15 +144,19 @@ export class TopsisService {
     // Save results to localStorage
     //localStorage.setItem('TOPSIS_Results', JSON.stringify(result));
 
-      // Add rank to each alternative and save to localStorage
-      const resultsWithRank = result.map((item, index) => ({
-        Alternative: item.alternative,
-        Ideal_Distance: item.idealDistance,
-        Anti_Ideal_Distance: item.antiIdealDistance,
-        Result: item.closenessCoefficient,
-        rank: (index + 1).toString()
-      }));
-      localStorage.setItem('TOPSIS_Results', JSON.stringify(resultsWithRank));
+    // Add rank to each alternative and save to localStorage
+    // Najprej sortiraj rezultate po Result (closenessCoefficient) v padajočem vrstnem redu
+    const sortedResults = result.sort((a, b) => b.closenessCoefficient - a.closenessCoefficient);
+    // Nato dodeli rank in shrani rezultate v localStorage
+    const resultsWithRank = sortedResults.map((item, index) => ({
+      Alternative: item.alternative,
+      Ideal_Distance: item.idealDistance,
+      Anti_Ideal_Distance: item.antiIdealDistance,
+      Result: item.closenessCoefficient,
+      rank: (index + 1).toString() // Rank je zdaj pravilno dodeljen
+    }));
+
+    localStorage.setItem('TOPSIS_Results', JSON.stringify(resultsWithRank));
 
     return { alternatives: result };
   }
