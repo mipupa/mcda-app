@@ -40,6 +40,7 @@ export class SelectDataComponent implements OnInit{
 
   toggleSelection(index: number, row: any): void {
     const selectedIndex = this.selectedRows.indexOf(index);
+    this.clearLocalStorageExceptKeys(['importedData', 'selectedData'])
 
     if (selectedIndex > -1) {
       // Odstrani vrstico iz izbire
@@ -64,6 +65,25 @@ export class SelectDataComponent implements OnInit{
     } else {
       alert('Izberite točno 3 podjetja pred nadaljevanjem!');
     }
+  }
+
+  clearLocalStorageExceptKeys(keysToKeep: string[]): void {
+    // Shrani vrednosti ključev, ki jih želiš obdržati
+    const valuesToKeep = keysToKeep.reduce((acc, key) => {
+      const value = localStorage.getItem(key);
+      if (value !== null) {
+        acc[key] = value; // Shrani ključ in njegovo vrednost
+      }
+      return acc;
+    }, {} as { [key: string]: string });
+  
+    // Počisti celoten localStorage
+    localStorage.clear();
+  
+    // Ponovno shrani vrednosti ključev, ki jih želiš obdržati
+    Object.entries(valuesToKeep).forEach(([key, value]) => {
+      localStorage.setItem(key, value);
+    });
   }
 
 }

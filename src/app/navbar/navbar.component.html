@@ -1,10 +1,3 @@
-<div class="container-fluid top-bar navbar-right">
-    <a class="mx-2 navbar-right">
-        <span class="fa fa-user-plus mx-2" aria-hidden="true"></span>Sign Up</a>
-    <a class="mx-2 navbar-right">
-        <span class="fas fa-sign-in mx-2" aria-hidde="true"></span>Login</a>
-</div>
-
 <nav class="navbar navbar-expand-sm mb-3 border shadow-sm" id="neubar">
     
   <div class="container-fluid my-container-fluid">
@@ -34,7 +27,7 @@
                 <a class="nav-link mx-2" href="#" [routerLink]="['/analysis-reports']">Analysis Reports</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link mx-2" href="#" [routerLink]="['/']">Data export</a>
+                  <a class="nav-link mx-2" (click)="dataExportClick()">Data export</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link mx-2" href="#" [routerLink]="['/']">Info</a>
