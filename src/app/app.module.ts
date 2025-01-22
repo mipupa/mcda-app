@@ -19,6 +19,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CustomPopupComponent } from './custom-popup/custom-popup.component';
 import { UserGuideVideosComponent } from './user-guide-videos/user-guide-videos.component';
 import { ReportsComponent } from './reports/reports.component';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import { ReportsComponent } from './reports/reports.component';
     SelectDataComponent, 
     CustomPopupComponent, 
     UserGuideVideosComponent, 
-    ReportsComponent    
+    ReportsComponent, AboutComponent    
     
   ],
   imports: [

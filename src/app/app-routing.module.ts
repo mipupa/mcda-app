@@ -10,6 +10,7 @@ import { PrometheeMethodComponent } from './promethee-method/promethee-method.co
 import { SelectDataComponent } from './select-data/select-data.component';
 import { UserGuideVideosComponent } from './user-guide-videos/user-guide-videos.component';
 import { ReportsComponent } from './reports/reports.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
 
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'user-guide-videos', component: UserGuideVideosComponent },
   { path: 'analysis-reports', component: ReportsComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/' }
 

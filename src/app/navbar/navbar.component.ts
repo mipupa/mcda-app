@@ -8,11 +8,11 @@ import { PopupService } from '../services/popup.service';
 })
 export class NavbarComponent {
 
-  constructor(private popup:PopupService) {}
+  constructor(private popup: PopupService) { }
 
   dataExportClick(): void {
 
-    this.popup.showPopup('We are sorry :(','Feature under development and will be covered soon');
+    this.popup.showPopup('We are sorry :(', 'Feature under development and will be covered soon');
   }
 
 }

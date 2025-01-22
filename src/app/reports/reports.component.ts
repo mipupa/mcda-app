@@ -44,8 +44,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.drawSeparateBarCharts();
       }
     }, {
-      threshold: 0.6
-      // Ko je 60% elementa v viewportu, se sproži
+      threshold: 0.3
+      // Ko je 30% elementa v viewportu, se sproži
     });
 
     // Povemo observer-ju, naj opazuje #bar-charts
@@ -187,7 +187,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         } else {
           gradient.append('stop')
             .attr('offset', '0%')
-            .attr('stop-color', '#f5b7b1'); // Temno rdečargb(233, 172, 166)
+            .attr('stop-color', '#f5b7b1'); // Temno rdeča
           gradient.append('stop')
             .attr('offset', '100%')
             .attr('stop-color', '#e74c3c'); // Svetlo rdeča

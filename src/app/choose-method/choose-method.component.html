@@ -1,7 +1,12 @@
 <div class="container mt-2"> 
-  <div class="card bg-color mt-3 mb-5 pt-2 pb-2">
+  <div class="card bg-color mt-3 pt-2 pb-2">
     <h5 class="text-center">Choose analysis method</h5>
   </div>
+
+  <div class="card bg-light mb-5 pt-2 pb-2">
+    <h5 class="text-center">Fully validated methods are WSM & AHP, but TOPSIS & PROMETHEE are in the validation process!</h5>
+  </div>
+
 <div class="d-flex justify-content-center mt-5 mb-5 my-5 mx-5 px-3 py-3 card card-choose-method title border shadow-sm bg-light" *ngIf="isData === true; else noDataTemplate">
     
     <div class="list-group text-center mx-3 mb-3 mt-3">
@@ -17,7 +22,7 @@
   </div>
   <ng-template #noDataTemplate>
     <div class="card title border shadow-sm mt-5 mb-3 pt-3 pb-3 text-center bg-light">
-     <h5>No data available. Select Data import from top menu and import data first!</h5>
+     <h5>No data available. Select Data import from Top menu and import data first!</h5>
     </div>
   </ng-template>
 

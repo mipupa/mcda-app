@@ -62,10 +62,10 @@ export class AhpMethodComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
     const storedData = JSON.parse(localStorage.getItem('selectedData') || '[]');
     const selectedData = localStorage.getItem('selectedData');
-  
+
     if (selectedData) {
       this.selectedData = JSON.parse(selectedData);
       // Preveri, če je dolžina matrike 3x3
@@ -77,17 +77,17 @@ export class AhpMethodComponent implements OnInit {
         this.criteria = this.selectedData[0];
         // Odstranimo glave stolpcev iz podatkov
         this.selectedData = this.selectedData.slice(1);
-      } else{
-        
-        console.log('AHP method is currently implemented only for 3x3 matrices.');
-        this.popup.showPopup('Application info', 
+      } else {
+
+        //console.log('AHP method is currently implemented only for 3x3 matrices.');
+        this.popup.showPopup('Application info',
           'AHP method is currently implemented only for 3x3 matrices. Please, select 3 alternatives and 3 criteria.');
-        this.router.navigate(['/choose-method']); 
+        this.router.navigate(['/choose-method']);
       }
     } else {
       alert('No selected data in local storage!');
     }
-  
+
     this.initializeMatrix0();
     this.initializeMatrix1();
     this.initializeMatrix2();
@@ -315,26 +315,31 @@ export class AhpMethodComponent implements OnInit {
       return;
     }
 
-    // Helper function to calculate weighted sum
-    const calculateWeightedSum = (priorityVector: number[], weight: number): number => {
-      return priorityVector.reduce((sum, value) => sum + value * weight, 0);
-    };
+    // Izračun za c1, c2 in c3
+const c1Sum = 
+c1_PriorityVectors[0] * c0_PriorityVectors_Weights[0] + // c1[0] × weight[0]
+c1_PriorityVectors[1] * c0_PriorityVectors_Weights[1] + // c1[1] × weight[1]
+c3_PriorityVectors[0] * c0_PriorityVectors_Weights[2];  // c3[2] × weight[2]
 
-    // Calculate sums for c1, c2, and c3
-    const c1Sum = calculateWeightedSum(c1_PriorityVectors, c0_PriorityVectors_Weights[0]);
-    const c2Sum = calculateWeightedSum(c2_PriorityVectors, c0_PriorityVectors_Weights[1]);
-    const c3Sum = calculateWeightedSum(c3_PriorityVectors, c0_PriorityVectors_Weights[2]);
+const c2Sum = 
+c2_PriorityVectors[0] * c0_PriorityVectors_Weights[0] + // c2[0] × weight[0]
+c2_PriorityVectors[1] * c0_PriorityVectors_Weights[1] + // c2[1] × weight[1]
+c3_PriorityVectors[1] * c0_PriorityVectors_Weights[2];  // c3[2] × weight[2]
 
-    // Store the results in localStorage
-    const AHP_Results = {
-      c1: c1Sum,
-      c2: c2Sum,
-      c3: c3Sum,
+const c3Sum = 
+c1_PriorityVectors[2] * c0_PriorityVectors_Weights[0] + // c1[2] × weight[0]
+c2_PriorityVectors[2] * c0_PriorityVectors_Weights[1] + // c2[2] × weight[1]
+c3_PriorityVectors[2] * c0_PriorityVectors_Weights[2];  // c3[2] × weight[2]
 
-    };
-    localStorage.setItem("AHP_Results", JSON.stringify(AHP_Results));
+// Rezultati v obliki objekta
+const AHP_Results = {
+c1: c1Sum,
+c2: c2Sum,
+c3: c3Sum,
+};
 
-    console.log("AHP Results calculated and stored:", AHP_Results);
+// Shranjevanje rezultatov v localStorage
+localStorage.setItem('AHP_Results', JSON.stringify(AHP_Results));
 
   }
 
@@ -342,14 +347,14 @@ export class AhpMethodComponent implements OnInit {
   displayCombinedResults(): void {
     const storedAHPResults = localStorage.getItem('AHP_Results');
     const storedSelectedData = localStorage.getItem('selectedData');
-  
+
     if (storedAHPResults && storedSelectedData) {
       const ahpResults = JSON.parse(storedAHPResults);
       const selectedData = JSON.parse(storedSelectedData);
-  
+
       // Extract table headers from the first row of selectedData
       this.tableHeaders = [...selectedData[0], "AHP Result", "Ranking"];
-  
+
       // Combine selectedData with AHP results
       let combinedData = selectedData.slice(1).map((row: any, index: number) => {
         const ahpResult = ahpResults[`c${index + 1}`] || 0; // Use c1, c2, c3...
@@ -358,19 +363,19 @@ export class AhpMethodComponent implements OnInit {
           ahpResult: ahpResult
         };
       });
-  
+
       // Sort combinedData by ahpResult in descending order to calculate rank
       combinedData.sort((a: any, b: any) => b.ahpResult - a.ahpResult);
-  
+
       // Assign rank based on the sorted order
       combinedData = combinedData.map((item: any, rank: number) => ({
         ...item,
         rank: rank + 1
       }));
-  
+
       // Save combinedData with rank to localStorage
       localStorage.setItem('AHP_Results_Combined', JSON.stringify(combinedData));
-  
+
       this.combinedData = combinedData;
     } else {
       console.error('AHP_Results or selectedData is missing in localStorage');
@@ -379,141 +384,141 @@ export class AhpMethodComponent implements OnInit {
 
   //createCharts Method
   createCharts(): void {
-      const storedResults = localStorage.getItem('selectedData');
-      if (!storedResults) {
-        console.error('Ni podatkov za izris grafov.');
-        return;
-      }
-  
-      d3.select('#chart-container').selectAll('*').remove();
-  
-      const result: (string | number)[][] = JSON.parse(storedResults);
-      const headers: string[] = result[0] as string[];
-      const rows: (string | number)[][] = result.slice(1);
-  
-      headers.slice(1).forEach((header: string, metricIndex: number) => {
-        const data = rows.map(row => ({
-          alternativa: row[0] as string,
-          rezultat: +(row[metricIndex + 1] as number),
-        }));
-  
-        const width = 300;
-        const height = 400;
-        const margin = { top: 50, right: 30, bottom: 80, left: 70 };
-  
-        const chartContainer = d3
-          .select('#chart-container')
-          .append('div')
-          .style('display', 'inline-block')
-          .style('margin', '10px');
-  
-        const svg = chartContainer
-          .append('svg')
-          .attr('width', width)
-          .attr('height', height);
-  
-        const x = d3
-          .scaleBand()
-          .domain(data.map(d => d.alternativa))
-          .range([margin.left, width - margin.right])
-          .padding(0.1);
-  
-        const y = d3
-          .scaleLinear()
-          .domain([0, d3.max(data, d => d.rezultat) || 0])
-          .nice()
-          .range([height - margin.bottom, margin.top]);
-  
-        // Definiramo barvno lestvico (od modre do rdeče)
-        const colorScale = d3.scaleLinear<string>()
-          .domain([0, d3.max(data, d => d.rezultat)!]) // Najnižja in najvišja vrednost
-          .range(['grey', 'blue']); // Barvni prehod stolpca grafa
-  
-        // Dodajanje gradienta v SVG
-        const gradient = svg.append('defs')
-          .append('linearGradient')
-          .attr('id', 'bar-gradient') // ID gradienta
-          .attr('x1', '0%')
-          .attr('y1', '100%')
-          .attr('x2', '0%')
-          .attr('y2', '0%'); // Gradient gre od spodaj navzgor
-  
-        // Definiramo barvne stopnje v gradientu
-        gradient.append('stop')
-          .attr('offset', '0%') // Spodnja barva
-          .attr('stop-color', '#ddc1a08e');
-        gradient.append('stop')
-          .attr('offset', '100%') // Zgornja barva
-          .attr('stop-color', '#3498db');
-  
-        // Dodajanje stolpcev z gradientom
-        svg
-          .append('g')
-          .selectAll('rect')
-          .data(data)
-          .join('rect')
-          .attr('x', d => x(d.alternativa)!)
-          .attr('y', y(0)) // Začetna višina stolpca na osi X (dno grafa)
-          .attr('height', 0) // Začetna višina stolpcev je 0
-          .attr('width', x.bandwidth())
-          .attr('fill', 'url(#bar-gradient)') // Uporaba gradienta
-          .transition() // Dodamo prehodno animacijo
-          .duration(2000) // Trajanje animacije (v milisekundah)
-          .attr('y', d => y(d.rezultat)) // Končni položaj stolpca glede na vrednost
-          .attr('height', d => y(0) - y(d.rezultat)); // Končna višina stolpca
-  
-        svg
-          .append('g')
-          .attr('transform', `translate(0,${height - margin.bottom})`)
-          .call(d3.axisBottom(x))
-          .selectAll('text')
-          .transition()
-          .duration(2000)
-          .ease(d3.easePolyIn)
-          .attr('transform', 'rotate(-45)')
-          .style('text-anchor', 'end')
-          .style('font-size', '14px'); // Povečana velikost pisave za x os
-  
-        svg
-          .append('g')
-          .attr('transform', `translate(${margin.left},0)`)
-          .call(d3.axisLeft(y))
-          .selectAll('text')
-          .transition()
-          .duration(2000)
-          .ease(d3.easeBounceIn)
-          .style('font-size', '14px'); // Povečana velikost pisave za y os
-  
-        svg
-          .append('text')
-          .attr('x', width / 2)
-          .attr('y', margin.top / 2 - 20) // Začetna pozicija nekoliko višje od ciljne
-          .attr('text-anchor', 'middle')
-          .style('font-size', '16px')
-          .style('font-weight', 'bold')
-          .style('opacity', 0) // Začetna prosojnost (nevidno)
-          .text(header)
-          .transition() // Dodamo animacijo
-          .duration(2000) // Trajanje animacije (v milisekundah)
-          .attr('y', margin.top / 2) // Premik na končno pozicijo
-          .style('opacity', 1); // Besedilo postane vidno
-  
-        // Dodajanje vrednosti na vrh stolpcev
-        svg
-          .append('g')
-          .selectAll('text')
-          .data(data)
-          .join('text')
-          .attr('x', d => x(d.alternativa)! + x.bandwidth() / 2) // Središče stolpca
-          .attr('y', d => y(d.rezultat) - 5) // Nekoliko nad vrhom stolpca
-          .attr('text-anchor', 'middle') // Poravnava besedila na sredino stolpca
-          .style('font-size', '14px') // Velikost pisave
-          .style('font-weight', 'normal') // Krepka pisava (opcijsko)
-          .text(d => d.rezultat) // Vrednost, ki jo prikažemo
-  
-      });
-  
+    const storedResults = localStorage.getItem('selectedData');
+    if (!storedResults) {
+      console.error('Ni podatkov za izris grafov.');
+      return;
     }
+
+    d3.select('#chart-container').selectAll('*').remove();
+
+    const result: (string | number)[][] = JSON.parse(storedResults);
+    const headers: string[] = result[0] as string[];
+    const rows: (string | number)[][] = result.slice(1);
+
+    headers.slice(1).forEach((header: string, metricIndex: number) => {
+      const data = rows.map(row => ({
+        alternativa: row[0] as string,
+        rezultat: +(row[metricIndex + 1] as number),
+      }));
+
+      const width = 300;
+      const height = 400;
+      const margin = { top: 50, right: 30, bottom: 80, left: 70 };
+
+      const chartContainer = d3
+        .select('#chart-container')
+        .append('div')
+        .style('display', 'inline-block')
+        .style('margin', '10px');
+
+      const svg = chartContainer
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+      const x = d3
+        .scaleBand()
+        .domain(data.map(d => d.alternativa))
+        .range([margin.left, width - margin.right])
+        .padding(0.1);
+
+      const y = d3
+        .scaleLinear()
+        .domain([0, d3.max(data, d => d.rezultat) || 0])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+      // Definiramo barvno lestvico (od modre do rdeče)
+      const colorScale = d3.scaleLinear<string>()
+        .domain([0, d3.max(data, d => d.rezultat)!]) // Najnižja in najvišja vrednost
+        .range(['grey', 'blue']); // Barvni prehod stolpca grafa
+
+      // Dodajanje gradienta v SVG
+      const gradient = svg.append('defs')
+        .append('linearGradient')
+        .attr('id', 'bar-gradient') // ID gradienta
+        .attr('x1', '0%')
+        .attr('y1', '100%')
+        .attr('x2', '0%')
+        .attr('y2', '0%'); // Gradient gre od spodaj navzgor
+
+      // Definiramo barvne stopnje v gradientu
+      gradient.append('stop')
+        .attr('offset', '0%') // Spodnja barva
+        .attr('stop-color', '#ddc1a08e');
+      gradient.append('stop')
+        .attr('offset', '100%') // Zgornja barva
+        .attr('stop-color', '#3498db');
+
+      // Dodajanje stolpcev z gradientom
+      svg
+        .append('g')
+        .selectAll('rect')
+        .data(data)
+        .join('rect')
+        .attr('x', d => x(d.alternativa)!)
+        .attr('y', y(0)) // Začetna višina stolpca na osi X (dno grafa)
+        .attr('height', 0) // Začetna višina stolpcev je 0
+        .attr('width', x.bandwidth())
+        .attr('fill', 'url(#bar-gradient)') // Uporaba gradienta
+        .transition() // Dodamo prehodno animacijo
+        .duration(2000) // Trajanje animacije (v milisekundah)
+        .attr('y', d => y(d.rezultat)) // Končni položaj stolpca glede na vrednost
+        .attr('height', d => y(0) - y(d.rezultat)); // Končna višina stolpca
+
+      svg
+        .append('g')
+        .attr('transform', `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x))
+        .selectAll('text')
+        .transition()
+        .duration(2000)
+        .ease(d3.easePolyIn)
+        .attr('transform', 'rotate(-45)')
+        .style('text-anchor', 'end')
+        .style('font-size', '14px'); // Povečana velikost pisave za x os
+
+      svg
+        .append('g')
+        .attr('transform', `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y))
+        .selectAll('text')
+        .transition()
+        .duration(2000)
+        .ease(d3.easeBounceIn)
+        .style('font-size', '14px'); // Povečana velikost pisave za y os
+
+      svg
+        .append('text')
+        .attr('x', width / 2)
+        .attr('y', margin.top / 2 - 20) // Začetna pozicija nekoliko višje od ciljne
+        .attr('text-anchor', 'middle')
+        .style('font-size', '16px')
+        .style('font-weight', 'bold')
+        .style('opacity', 0) // Začetna prosojnost (nevidno)
+        .text(header)
+        .transition() // Dodamo animacijo
+        .duration(2000) // Trajanje animacije (v milisekundah)
+        .attr('y', margin.top / 2) // Premik na končno pozicijo
+        .style('opacity', 1); // Besedilo postane vidno
+
+      // Dodajanje vrednosti na vrh stolpcev
+      svg
+        .append('g')
+        .selectAll('text')
+        .data(data)
+        .join('text')
+        .attr('x', d => x(d.alternativa)! + x.bandwidth() / 2) // Središče stolpca
+        .attr('y', d => y(d.rezultat) - 5) // Nekoliko nad vrhom stolpca
+        .attr('text-anchor', 'middle') // Poravnava besedila na sredino stolpca
+        .style('font-size', '14px') // Velikost pisave
+        .style('font-weight', 'normal') // Krepka pisava (opcijsko)
+        .text(d => d.rezultat) // Vrednost, ki jo prikažemo
+
+    });
+
+  }
 
 
 }

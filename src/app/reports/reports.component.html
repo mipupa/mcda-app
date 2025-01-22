@@ -4,7 +4,7 @@
   </div>
 
 <!-- AHP Results Table -->
-<div class="report-section">
+<div class="report-section" *ngIf="ahpResults.length">
   <div class="card title border shadow-sm bg-light mt-3">
   <h4 class="mx-2 my-2 text-center">AHP Results</h4>
   </div>
@@ -33,7 +33,7 @@
 </div>
 
 <!-- TOPSIS Results Table -->
-<div class="report-section">
+<div class="report-section" *ngIf="topsisResults.length">
   <div class="card title border shadow-sm bg-light mt-3">
   <h4 class="mx-2 my-2 text-center">TOPSIS Results</h4>
   </div>
@@ -60,9 +60,9 @@
 </div>
 
 <!-- Promethee II Results Table -->
-<div class="report-section">
+<div class="report-section" *ngIf="prometheeResults.length">
   <div class="card title border shadow-sm bg-light mt-3">
-  <h4 class="mx-2 my-2 text-center">Promethee II Results</h4>
+  <h4 class="mx-2 my-2 text-center">PROMETHEE II Results</h4>
   </div>
   <table class="results-table border shadow-sm">
     <thead>
@@ -89,7 +89,7 @@
 </div>
 
 <!-- WSM Results Table -->
-<div class="report-section">
+<div class="report-section" *ngIf="wsmResults.length">
   <div class="card title border shadow-sm bg-light mt-3">
   <h4 class="mx-2 my-2 text-center">WSM Results</h4>
   </div>
