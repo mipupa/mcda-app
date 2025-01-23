@@ -11,6 +11,7 @@ import { SelectDataComponent } from './select-data/select-data.component';
 import { UserGuideVideosComponent } from './user-guide-videos/user-guide-videos.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AboutComponent } from './about/about.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 const routes: Routes = [
 
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'analysis-reports', component: ReportsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent},
+  { path: 'contact-form', component: ContactFormComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/' }
 

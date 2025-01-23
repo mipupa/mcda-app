@@ -104,7 +104,7 @@ export class TopsisService {
   runTopsis(
     weights: number[],
     criteriaTypes: string[],
-    normMethod: 'v' | 'l' = 'v'
+    normMethod: 'v' | 'l' = 'v'  // v = vector normalisation ; l = linear normalization
   ): {
     alternatives: {
       alternative: string;

@@ -62,10 +62,13 @@
         </tr>
       </tbody>
     </table>
+
     <div class="total-weight">
-      Total Weight Checksum: {{ getTotalWeight() }} / 1.0
+      <span class="left-text">Normalization method used: Vector</span>
+      <span>Total Weight Checksum: {{ getTotalWeight() }} / 1.0</span>
     </div>
-    <button type="submit" class="analyze-button" [disabled]="getTotalWeight() !== 1">Process Analysis</button>
+
+    <button type="submit" class="analyze-button mt-5" [disabled]="getTotalWeight() !== 1">Process Analysis</button>
   </form>
   </div>
   

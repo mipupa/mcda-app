@@ -20,6 +20,7 @@ import { CustomPopupComponent } from './custom-popup/custom-popup.component';
 import { UserGuideVideosComponent } from './user-guide-videos/user-guide-videos.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AboutComponent } from './about/about.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 
 @NgModule({
@@ -37,7 +38,9 @@ import { AboutComponent } from './about/about.component';
     SelectDataComponent, 
     CustomPopupComponent, 
     UserGuideVideosComponent, 
-    ReportsComponent, AboutComponent    
+    ReportsComponent,
+    AboutComponent,
+    ContactFormComponent    
     
   ],
   imports: [

@@ -64,6 +64,17 @@ td:not(:first-child), th:not(:first-child) {
   text-align: right;
 }
 
+.total-weight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-text {
+  margin-right: 10px; /* Razmik med besedilom na levi in desnim delom */
+}
+
+
 #chartContainer {
   display: flex;
   justify-content: center;
