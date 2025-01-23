@@ -88,7 +88,8 @@ export class TopsisService {
         )
       )
     );
-
+    console.log('bestDistances', bestDistances);
+    console.log('worstDistances', worstDistances);
     return { bestDistances, worstDistances };
   }
 
@@ -112,6 +113,7 @@ export class TopsisService {
       antiIdealDistance: number;
       closenessCoefficient: number;
     }[];
+
   } {
     const data = this.getSelectedData();
     if (!data || data.length < 2) {
@@ -140,23 +142,6 @@ export class TopsisService {
       closenessCoefficient: scores[index],
       rank: (index + 1).toString()
     }));
-
-    // Save results to localStorage
-    //localStorage.setItem('TOPSIS_Results', JSON.stringify(result));
-
-    // Add rank to each alternative and save to localStorage
-    // Najprej sortiraj rezultate po Result (closenessCoefficient) v padajočem vrstnem redu
-    const sortedResults = result.sort((a, b) => b.closenessCoefficient - a.closenessCoefficient);
-    // Nato dodeli rank in shrani rezultate v localStorage
-    const resultsWithRank = sortedResults.map((item, index) => ({
-      Alternative: item.alternative,
-      Ideal_Distance: item.idealDistance,
-      Anti_Ideal_Distance: item.antiIdealDistance,
-      Result: item.closenessCoefficient,
-      rank: (index + 1).toString() // Rank je zdaj pravilno dodeljen
-    }));
-
-    localStorage.setItem('TOPSIS_Results', JSON.stringify(resultsWithRank));
 
     return { alternatives: result };
   }

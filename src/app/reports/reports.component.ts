@@ -68,13 +68,19 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     // TOPSIS Results
     const topsisRawData = JSON.parse(localStorage.getItem('TOPSIS_Results') || '[]');
     if (Array.isArray(topsisRawData)) {
-      this.topsisResults = topsisRawData.map((item: any) => ({
-        Alternative: item.Alternative,
-        Ideal_Distance: item.Ideal_Distance,
-        Anti_Ideal_Distance: item.Anti_Ideal_Distance,
-        Result: item.Result,
-        Rank: parseInt(item.rank, 10)
-      }));
+      this.topsisResults = topsisRawData
+        .map((item: any) => ({
+          Alternative: item.Alternative,
+          Ideal_Distance: item.Ideal_Distance,
+          Anti_Ideal_Distance: item.Anti_Ideal_Distance,
+          closeness_coefficient: item.Result,
+          Result: item.Result
+        }))
+        .sort((a: any, b: any) => b.Result - a.Result) // Sortiranje po Result (največje -> najmanjše)
+        .map((item: any, index: number) => ({
+          ...item, // Ohranimo obstoječe lastnosti
+          Rank: index + 1 // Določimo nov rank glede na pozicijo v tabeli
+        }));
     } else {
       console.warn('TOPSIS Results is not an array:', topsisRawData);
     }
@@ -120,7 +126,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const methods = [
       { name: 'AHP', data: this.ahpResults },
       { name: 'TOPSIS', data: this.topsisResults },
-      { name: 'PROMETHEE', data: this.prometheeResults },
+      { name: 'PROMETHEE II', data: this.prometheeResults },
       { name: 'WSM', data: this.wsmResults }
     ];
 

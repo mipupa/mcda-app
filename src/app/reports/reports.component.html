@@ -43,6 +43,7 @@
         <th>Alternative</th>
         <th>Ideal Distance</th>
         <th>Anti-Ideal Distance</th>
+        <th>Closeness Coefficient</th>
         <th>Result</th>
         <th>Rank</th>
       </tr>
@@ -52,6 +53,7 @@
         <td>{{ row.Alternative }}</td>
         <td>{{ row.Ideal_Distance | number:'1.3-3' }}</td>
         <td>{{ row.Anti_Ideal_Distance | number:'1.3-3' }}</td>
+        <td>{{ row.closeness_coefficient | number:'1.3-3' }}</td>
         <td>{{ row.Result | number:'1.3-3' }}</td>
         <td>{{ row.Rank }}</td>
       </tr>
@@ -120,7 +122,4 @@
       <div id="bar-charts"></div>     
       </div>
     </div>
-
-
-
 </div>

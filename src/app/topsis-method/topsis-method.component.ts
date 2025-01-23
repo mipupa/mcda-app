@@ -100,9 +100,9 @@ export class TopsisMethodComponent implements OnInit {
         alternativa: alt.alternative,
         bestDistance: alt.idealDistance,
         worstDistance: alt.antiIdealDistance,
-        idealBest: alt.closenessCoefficient, // Ideal best is PIS
-        idealWorst: 1 - alt.closenessCoefficient, // Ideal worst is NIS
-        rezultat: alt.closenessCoefficient,
+        //idealBest: 1 - alt.closenessCoefficient, // Ideal best is PIS
+        //idealWorst: alt.closenessCoefficient, // Ideal worst is NIS
+        rezultat: 1 - alt.closenessCoefficient,
       }))
       .sort((a, b) => b.rezultat - a.rezultat) // Sort by closenessCoefficient descending
       .map((res, index) => ({

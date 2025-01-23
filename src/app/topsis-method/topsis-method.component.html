@@ -84,20 +84,16 @@
           <th>Alternative</th>
           <th>Best Distance</th>
           <th>Worst Distance</th>
-          <th>Ideal Best (PIS)</th>
-          <th>Ideal Worst (NIS)</th>
-          <th>Score</th>
+          <th>Clossenes Coefficient</th>
           <th>Ranking</th>       
         </tr>
       </thead>
       <tbody>
         <tr class="table-row" *ngFor="let res of result; let i=index;">
           <td>{{ res.alternativa }}</td>
-          <td>{{ res.bestDistance.toFixed(2) }}</td>
-          <td>{{ res.worstDistance.toFixed(2) }}</td>          
-          <td>{{ res.idealBest.toFixed(2) }}</td>
-          <td>{{ res.idealWorst.toFixed(2) }}</td>
-          <td>{{ res.rezultat.toFixed(2) }}</td>
+          <td>{{ res.bestDistance.toFixed(3) }}</td>
+          <td>{{ res.worstDistance.toFixed(3) }}</td>          
+          <td>{{ res.rezultat.toFixed(3) }}</td>
           <td>{{ res.rank }}</td>         
         </tr>
       </tbody>
